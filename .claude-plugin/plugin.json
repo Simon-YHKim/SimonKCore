@@ -1,7 +1,7 @@
 {
   "name": "simonk-core",
   "version": "0.1.0",
-  "description": "SimonK 플러그인 공유 인프라 (위임·모델라우팅·메모리·지식도구·페르소나검증)",
+  "description": "SimonK 플러그인 공유 인프라 (위임·모델라우팅·메모리·지식도구·페르소나검증·완료보고)",
   "author": { "name": "Simon Kim", "url": "https://github.com/Simon-YHKim" },
   "repository": "https://github.com/Simon-YHKim/SimonKCore",
   "license": "MIT",
@@ -11,6 +11,7 @@
     "./skills/careful/",
     "./skills/caveman/",
     "./skills/checkpoint/",
+    "./skills/completion-report/",
     "./skills/defuddle/",
     "./skills/designmd-upgrade/",
     "./skills/domain-glossary/",
