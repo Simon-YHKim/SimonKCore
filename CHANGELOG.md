@@ -5,6 +5,11 @@ All notable changes to this plugin are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-06-16
+
+### Changed
+- **`completion-report` skill upgraded to 0.3.0** — HTML completion reports now have button toggles for **language (Korean / English)** and **explanation depth (Simple / Expert)**, where both depths always state purpose and reason. The "Simple" explanation is understandable without any coding knowledge. Stays self-contained: `<body>` class toggles + ~10 lines of inline vanilla JS (no external libraries); each item's detail is authored in 4 variants (easy/expert × ko/en). Inherited automatically by every skill that emits the HTML completion-report standard.
+
 ## [0.2.0] - 2026-06-16
 
 ### Added
@@ -21,4 +26,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Migrated stale-schema `evals/cases.json` to the canonical object schema — 20 migrated.
 
+[0.3.0]: https://github.com/Simon-YHKim/SimonKCore/releases/tag/v0.3.0
 [0.2.0]: https://github.com/Simon-YHKim/SimonKCore/releases/tag/v0.2.0
