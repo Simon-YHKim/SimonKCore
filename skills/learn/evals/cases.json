@@ -1,0 +1,31 @@
+{
+  "skill": "learn",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "show-learnings-en",
+      "prompt": "What have we learned across our sessions so far?",
+      "assertions": [
+        { "id": "reviews-learnings", "text": "The skill reviews and surfaces the project learnings that gstack has accumulated across sessions." },
+        { "id": "grounded-output", "text": "The response presents the learnings rather than generating new advice from scratch." }
+      ]
+    },
+    {
+      "id": "prune-stale-ko",
+      "prompt": "오래된 학습 내용을 정리해줘, 더 이상 유효하지 않은 건 빼고.",
+      "assertions": [
+        { "id": "prunes-stale", "text": "The skill prunes stale or no-longer-valid learnings from the stored set." },
+        { "id": "preserves-valid", "text": "The skill keeps still-relevant learnings while removing only the stale ones." },
+        { "id": "manages-store", "text": "The skill manages the persisted learnings store rather than answering an unrelated question." }
+      ]
+    },
+    {
+      "id": "export-learnings-en",
+      "prompt": "Export all the learnings we've gathered so I can share them.",
+      "assertions": [
+        { "id": "exports", "text": "The skill exports the collected learnings into a shareable output." },
+        { "id": "covers-all", "text": "The export includes the learnings accumulated across sessions, not a single session." }
+      ]
+    }
+  ]
+}

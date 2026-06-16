@@ -1,42 +1,38 @@
-[
-  {
-    "name": "Korean trigger — 리포트 만들어줘",
-    "user_input": "리포트 만들어줘",
-    "expected_skill": "simonk-report"
-  },
-  {
-    "name": "Korean trigger — 보고서 작성",
-    "user_input": "이번 작업 보고서 작성해줘",
-    "expected_skill": "simonk-report"
-  },
-  {
-    "name": "Slash command",
-    "user_input": "/simonk-report",
-    "expected_skill": "simonk-report"
-  },
-  {
-    "name": "English trigger",
-    "user_input": "generate session report",
-    "expected_skill": "simonk-report"
-  },
-  {
-    "name": "Executive briefing variant",
-    "user_input": "executive briefing for this sprint",
-    "expected_skill": "simonk-report"
-  },
-  {
-    "name": "Negative — landing-report routes elsewhere",
-    "user_input": "랜딩페이지 리포트",
-    "expected_skill": "landing-report"
-  },
-  {
-    "name": "Negative — release-notes is different",
-    "user_input": "이번 릴리스 노트 써줘",
-    "expected_skill": "release-notes"
-  },
-  {
-    "name": "Negative — generic HTML output routes to html-default-output",
-    "user_input": "HTML로 만들어줘",
-    "expected_skill": "html-default-output"
-  }
-]
+{
+  "skill": "simonk-report",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-report",
+      "prompt": "리포트 만들어줘",
+      "assertions": [
+        { "id": "html-report-file", "text": "The response produces a self-contained HTML report at .simonk/reports/YYYY-MM-DD-HHMM.html." },
+        { "id": "report-sections", "text": "The report includes an executive summary, decisions log, phase trace, diff summary, and verification." }
+      ]
+    },
+    {
+      "id": "ko-work-report-and-slash",
+      "prompt": "이번 작업 보고서 작성해줘",
+      "assertions": [
+        { "id": "session-accomplishments", "text": "The response reports what simonK or the session accomplished, equivalent to /simonk-report." },
+        { "id": "decisions-and-phases", "text": "It captures the decisions log and phase trace for the work performed." }
+      ]
+    },
+    {
+      "id": "en-executive-briefing",
+      "prompt": "executive briefing for this sprint",
+      "assertions": [
+        { "id": "executive-summary", "text": "The response generates a session report led by an executive summary." },
+        { "id": "rich-html-output", "text": "It outputs a rich self-contained HTML report saved under .simonk/reports/." }
+      ]
+    },
+    {
+      "id": "negative-html-default",
+      "prompt": "HTML로 만들어줘",
+      "assertions": [
+        { "id": "routes-to-html-default", "text": "The response recognizes this generic HTML request should route to html-default-output, not simonk-report." },
+        { "id": "no-session-report", "text": "It does not produce a .simonk/reports session report for this request." }
+      ]
+    }
+  ]
+}

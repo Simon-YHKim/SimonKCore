@@ -1,17 +1,52 @@
-[
-  {
-    "name": "trigger ko 1",
-    "user_input": "\uc2a4\ud0ac \ucc3e\uc544",
-    "expected_skill": "find-skill"
-  },
-  {
-    "name": "trigger slash",
-    "user_input": "/find-skill",
-    "expected_skill": "find-skill"
-  },
-  {
-    "name": "trigger en 1",
-    "user_input": "find a skill",
-    "expected_skill": "find-skill"
-  }
-]
+{
+  "skill": "find-skill",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-find",
+      "prompt": "스킬 찾아",
+      "assertions": [
+        {
+          "id": "searches-catalog",
+          "text": "The agent searches the external awesome-claude-skills catalog for matching skills."
+        },
+        {
+          "id": "searches-index",
+          "text": "The agent also searches the SimonK Stack INDEX.md for relevant skills."
+        },
+        {
+          "id": "recommends",
+          "text": "The agent recommends matching skills to the user."
+        }
+      ]
+    },
+    {
+      "id": "slash-command",
+      "prompt": "/find-skill",
+      "assertions": [
+        {
+          "id": "invokes-search",
+          "text": "The slash command invokes the skill discovery workflow."
+        },
+        {
+          "id": "returns-matches",
+          "text": "The agent returns recommended skills from the catalog and INDEX.md."
+        }
+      ]
+    },
+    {
+      "id": "en-find",
+      "prompt": "find a skill",
+      "assertions": [
+        {
+          "id": "searches-both-sources",
+          "text": "The agent searches both awesome-claude-skills and the SimonK Stack INDEX.md."
+        },
+        {
+          "id": "recommends-en",
+          "text": "The agent recommends matching skills based on the search."
+        }
+      ]
+    }
+  ]
+}

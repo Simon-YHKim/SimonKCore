@@ -1,17 +1,48 @@
-[
-  {
-    "name": "trigger by ko alias",
-    "user_input": "OMC \ucd5c\uc2e0\ud654",
-    "expected_skill": "omc-upgrade"
-  },
-  {
-    "name": "trigger by slash command",
-    "user_input": "/omc-upgrade",
-    "expected_skill": "omc-upgrade"
-  },
-  {
-    "name": "trigger by en alias",
-    "user_input": "upgrade omc",
-    "expected_skill": "omc-upgrade"
-  }
-]
+{
+  "skill": "omc-upgrade",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-upgrade",
+      "prompt": "OMC 최신화",
+      "assertions": [
+        {
+          "id": "detects-vendored",
+          "text": "The agent recognizes this as a request to upgrade the vendored oh-my-claudecode stack."
+        },
+        {
+          "id": "ff-only-pull",
+          "text": "The agent performs a fast-forward-only git pull of the oh-my-claudecode vendor."
+        }
+      ]
+    },
+    {
+      "id": "slash-command",
+      "prompt": "/omc-upgrade",
+      "assertions": [
+        {
+          "id": "invokes-upgrade",
+          "text": "The slash command invokes the oh-my-claudecode upgrade workflow."
+        },
+        {
+          "id": "ff-only",
+          "text": "The agent uses a fast-forward-only pull and reports the result."
+        }
+      ]
+    },
+    {
+      "id": "en-upgrade",
+      "prompt": "upgrade omc",
+      "assertions": [
+        {
+          "id": "updates-vendor",
+          "text": "The agent updates the vendored oh-my-claudecode stack via a fast-forward-only pull."
+        },
+        {
+          "id": "reports",
+          "text": "The agent reports the upgraded oh-my-claudecode state."
+        }
+      ]
+    }
+  ]
+}

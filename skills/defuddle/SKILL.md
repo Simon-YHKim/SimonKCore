@@ -1,6 +1,7 @@
 ---
 name: defuddle
-description: Extract clean markdown content from web pages using Defuddle CLI, removing clutter and navigation to save tokens. Use instead of WebFetch when the user provides a URL to read or analyze, for online documentation, articles, blog posts, or any standard web page. Do NOT use for URLs ending in .md — those are already markdown, use WebFetch directly.
+description: >
+  Use when the user provides a URL to read, fetch, or analyze — online documentation, articles, blog posts, or any standard web page. Triggers on "이 링크 정리해줘", "이 페이지 읽어줘", "본문만 추출해줘", "read this URL", "extract article", "fetch this page", "clean markdown from URL". Produces clean markdown extracted via the Defuddle CLI, removing navigation and clutter to save tokens. Use instead of WebFetch for HTML pages; do NOT use for URLs ending in .md, which are already markdown.
 version: 1.0.0
 ---
 

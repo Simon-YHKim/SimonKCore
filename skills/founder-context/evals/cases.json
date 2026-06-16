@@ -1,42 +1,76 @@
-[
-  {
-    "name": "Korean full bootstrap trigger",
-    "user_input": "4 파일 만들어",
-    "expected_skill": "founder-context"
-  },
-  {
-    "name": "Korean project context trigger",
-    "user_input": "프로젝트 컨텍스트 세팅해줘",
-    "expected_skill": "founder-context"
-  },
-  {
-    "name": "Slash command",
-    "user_input": "/founder-context",
-    "expected_skill": "founder-context"
-  },
-  {
-    "name": "Alternative slash command",
-    "user_input": "/personal-bootstrap",
-    "expected_skill": "founder-context"
-  },
-  {
-    "name": "Single-file mode",
-    "user_input": "/founder-context vision",
-    "expected_skill": "founder-context"
-  },
-  {
-    "name": "English trigger",
-    "user_input": "bootstrap project foundation",
-    "expected_skill": "founder-context"
-  },
-  {
-    "name": "Negative — CLAUDE.md request routes to project-context-md",
-    "user_input": "CLAUDE.md 만들어줘",
-    "expected_skill": "project-context-md"
-  },
-  {
-    "name": "Negative — design review routes to simon-design-first not here",
-    "user_input": "랜딩페이지 디자인 만들어줘",
-    "expected_skill": "simon-design-first"
-  }
-]
+{
+  "skill": "founder-context",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-full-bootstrap",
+      "prompt": "4 파일 만들어",
+      "assertions": [
+        {
+          "id": "creates-four-docs",
+          "text": "The agent creates the four founder docs: me.md, vision.md, design.md, and workingstyle.md."
+        },
+        {
+          "id": "per-file-interview",
+          "text": "The agent runs a per-file interview to gather content for each document."
+        }
+      ]
+    },
+    {
+      "id": "slash-command",
+      "prompt": "/founder-context",
+      "assertions": [
+        {
+          "id": "invokes-bootstrap",
+          "text": "The slash command invokes the founder-context bootstrap workflow."
+        },
+        {
+          "id": "produces-four-files",
+          "text": "The agent produces me.md, vision.md, design.md, and workingstyle.md."
+        }
+      ]
+    },
+    {
+      "id": "single-file-mode",
+      "prompt": "/founder-context vision",
+      "assertions": [
+        {
+          "id": "single-file",
+          "text": "The agent enters single-file mode and only generates vision.md."
+        },
+        {
+          "id": "interview-for-vision",
+          "text": "The agent interviews the user specifically for the vision.md content."
+        }
+      ]
+    },
+    {
+      "id": "negative-claude-md",
+      "prompt": "CLAUDE.md 만들어줘",
+      "assertions": [
+        {
+          "id": "routes-to-project-context-md",
+          "text": "The agent routes this request to the project-context-md skill."
+        },
+        {
+          "id": "does-not-trigger-founder",
+          "text": "The agent does not trigger the founder-context four-file bootstrap for a CLAUDE.md request."
+        }
+      ]
+    },
+    {
+      "id": "negative-design-first",
+      "prompt": "랜딩페이지 디자인 만들어줘",
+      "assertions": [
+        {
+          "id": "routes-to-design-first",
+          "text": "The agent routes this landing-page design request to the simon-design-first skill."
+        },
+        {
+          "id": "does-not-trigger-founder-design",
+          "text": "The agent does not trigger founder-context for a landing page design request."
+        }
+      ]
+    }
+  ]
+}

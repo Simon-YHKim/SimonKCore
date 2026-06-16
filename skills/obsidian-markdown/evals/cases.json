@@ -1,0 +1,32 @@
+{
+  "skill": "obsidian-markdown",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "add-wikilink-ko",
+      "prompt": "이 노트에 위키링크 추가하고 콜아웃 만들어줘.",
+      "assertions": [
+        { "id": "adds-wikilink", "text": "The skill adds an Obsidian wikilink to the note." },
+        { "id": "adds-callout", "text": "The skill creates an Obsidian callout in the note." },
+        { "id": "obsidian-flavored", "text": "The edits use Obsidian Flavored Markdown syntax." }
+      ]
+    },
+    {
+      "id": "create-callout-en",
+      "prompt": "Create a callout and embed a note in this Obsidian markdown file.",
+      "assertions": [
+        { "id": "creates-callout", "text": "The skill creates a callout in the markdown file." },
+        { "id": "embeds-note", "text": "The skill embeds the referenced note using Obsidian embed syntax." }
+      ]
+    },
+    {
+      "id": "write-note-properties-en",
+      "prompt": "Write an Obsidian note with properties and a wikilink to another page.",
+      "assertions": [
+        { "id": "writes-note", "text": "The skill writes a new Obsidian markdown note." },
+        { "id": "adds-properties", "text": "The note includes Obsidian properties." },
+        { "id": "adds-wikilink", "text": "The note contains a wikilink to the referenced page." }
+      ]
+    }
+  ]
+}

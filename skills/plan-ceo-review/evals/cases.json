@@ -1,0 +1,31 @@
+{
+  "skill": "plan-ceo-review",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-think-bigger",
+      "prompt": "이 계획 좀 더 크게 생각해줘 — 충분히 야심찬지 봐줘",
+      "assertions": [
+        { "id": "founder-mode", "text": "The response reviews the plan in CEO/founder mode and rethinks the underlying problem." },
+        { "id": "selects-mode", "text": "It selects one of the four modes: SCOPE EXPANSION, SELECTIVE EXPANSION, HOLD SCOPE, or SCOPE REDUCTION." },
+        { "id": "ten-star", "text": "It challenges premises and points toward the 10-star version of the product." }
+      ]
+    },
+    {
+      "id": "en-strategy-review",
+      "prompt": "Strategy review: is this ambitious enough or should we expand scope?",
+      "assertions": [
+        { "id": "rethink-problem", "text": "The response rethinks the problem rather than only refining the existing plan." },
+        { "id": "mode-recommendation", "text": "It recommends one of the four scope modes with justification." }
+      ]
+    },
+    {
+      "id": "en-rethink",
+      "prompt": "Rethink this — think bigger about what we're building",
+      "assertions": [
+        { "id": "challenges-premises", "text": "The response challenges the plan's premises and identifies a more ambitious direction." },
+        { "id": "scope-mode-output", "text": "It frames its conclusion as a SCOPE EXPANSION, SELECTIVE EXPANSION, HOLD SCOPE, or SCOPE REDUCTION decision." }
+      ]
+    }
+  ]
+}

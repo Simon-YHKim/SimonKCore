@@ -2,10 +2,7 @@
 name: completion-report
 version: 0.1.0
 description: >
-  플러그인 작업 완료 후 자체완결 HTML 보고서를 생성한다 — 이미지/스크린샷·표·차트(인라인 SVG)를 적극 사용하고,
-  사용자 언어로 작성하며, 현지 시간을 불러와 로케일 형식으로 완료 시각을 남긴다. 트리거 "작업 보고서", "완료 리포트",
-  "HTML 보고", "결과 보고서 만들어", "completion report", /completion-report. 모든 오케스트레이터(skstack·skdesign·
-  skmarket·skaihub)가 완료 직후 호출하는 공용 스킬(SimonKCore).
+  Use when a plugin task finishes and the user wants a self-contained completion report. Triggers on "작업 보고서", "완료 리포트", "HTML 보고", "결과 보고서 만들어", "completion report", /completion-report. Creates a self-contained HTML report that uses images/screenshots, tables, and inline-SVG charts, is written in the user's language, and reads local time to stamp the completion moment in locale format. Shared SimonKCore skill called by all orchestrators (skstack, skdesign, skmarket, skaihub) right after completion.
 allowed-tools:
   - Read
   - Write

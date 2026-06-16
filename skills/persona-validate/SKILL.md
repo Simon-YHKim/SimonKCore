@@ -2,10 +2,7 @@
 name: persona-validate
 version: 0.1.0
 description: >
-  어떤 작업물·계획·산출물이든 출시 전에 다양한 사용자 + 도메인 전문가 페르소나 패널로 검증해 빈틈을 찾는다.
-  트리거 "페르소나 검증", "전문가 리뷰 패널", "이거 검증해줘", "출시 전 점검", "expert review", /persona-validate.
-  일반 사용자 페르소나(연령·직업·자산·테크 다양)로 접근성·커버리지를, 프로페셔널 전문가 페르소나로 정확성·리스크·베스트프랙티스를
-  채점하고, 우선순위화된 개선 backlog를 낸다. 모든 도메인(빌드·디자인·마케팅·AI·문서·계획)에 적용. SimonKCore 공유 스킬.
+  Use when the user wants to validate any artifact, plan, or deliverable before launch against a panel of diverse user and domain-expert personas to find gaps. Triggers on "페르소나 검증", "전문가 리뷰 패널", "이거 검증해줘", "출시 전 점검", "expert review", /persona-validate. Produces a prioritized improvement backlog, scoring accessibility and coverage with general-user personas (varied age, job, assets, tech) and accuracy, risk, and best-practices with professional expert personas. Applies to every domain (build, design, marketing, AI, docs, planning). Shared SimonKCore skill.
 allowed-tools:
   - Read
   - Grep

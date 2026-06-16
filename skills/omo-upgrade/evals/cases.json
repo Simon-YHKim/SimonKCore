@@ -1,17 +1,48 @@
-[
-  {
-    "name": "trigger by ko alias",
-    "user_input": "OMO \ucd5c\uc2e0\ud654",
-    "expected_skill": "omo-upgrade"
-  },
-  {
-    "name": "trigger by slash command",
-    "user_input": "/omo-upgrade",
-    "expected_skill": "omo-upgrade"
-  },
-  {
-    "name": "trigger by en alias",
-    "user_input": "upgrade omo",
-    "expected_skill": "omo-upgrade"
-  }
-]
+{
+  "skill": "omo-upgrade",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-upgrade",
+      "prompt": "OMO 최신화",
+      "assertions": [
+        {
+          "id": "detects-vendored",
+          "text": "The agent recognizes this as a request to upgrade the vendored oh-my-openagent stack."
+        },
+        {
+          "id": "ff-only-pull",
+          "text": "The agent performs a fast-forward-only git pull of the oh-my-openagent vendor."
+        }
+      ]
+    },
+    {
+      "id": "slash-command",
+      "prompt": "/omo-upgrade",
+      "assertions": [
+        {
+          "id": "invokes-upgrade",
+          "text": "The slash command invokes the oh-my-openagent upgrade workflow."
+        },
+        {
+          "id": "ff-only",
+          "text": "The agent uses a fast-forward-only pull and reports the result."
+        }
+      ]
+    },
+    {
+      "id": "en-upgrade",
+      "prompt": "upgrade omo",
+      "assertions": [
+        {
+          "id": "updates-vendor",
+          "text": "The agent updates the vendored oh-my-openagent stack via a fast-forward-only pull."
+        },
+        {
+          "id": "reports",
+          "text": "The agent reports the upgraded oh-my-openagent state."
+        }
+      ]
+    }
+  ]
+}

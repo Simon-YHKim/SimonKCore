@@ -1,0 +1,30 @@
+{
+  "skill": "unfreeze",
+  "version": "0.1.0",
+  "cases": [
+    {
+      "id": "ko-unlock-edits",
+      "prompt": "프리즈 풀어줘 — 모든 디렉토리 편집 다시 허용해줘",
+      "assertions": [
+        { "id": "clears-boundary", "text": "The response clears the freeze boundary previously set by /freeze." },
+        { "id": "all-dirs-editable", "text": "It allows edits to all directories again." }
+      ]
+    },
+    {
+      "id": "en-remove-freeze",
+      "prompt": "Unfreeze and remove the freeze so I can edit everything",
+      "assertions": [
+        { "id": "removes-freeze", "text": "The response removes the freeze boundary rather than setting one." },
+        { "id": "edits-allowed", "text": "It confirms that edits are now permitted across all directories." }
+      ]
+    },
+    {
+      "id": "slash-unfreeze",
+      "prompt": "/unfreeze",
+      "assertions": [
+        { "id": "boundary-removal", "text": "The skill produces removal of the freeze boundary set by /freeze." },
+        { "id": "unlock-all", "text": "It re-enables editing for all directories." }
+      ]
+    }
+  ]
+}

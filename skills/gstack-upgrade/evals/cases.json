@@ -1,14 +1,38 @@
-[
-  {
-    "name": "trigger_korean_upgrade",
-    "input": "gstack 업데이트 최신으로 올려줘.",
-    "expected_skill": "gstack-upgrade",
-    "must_contain": ["upgrade", "version", "changelog", "install"]
-  },
-  {
-    "name": "trigger_english_voice",
-    "input": "Upgrade the tools to the latest version.",
-    "expected_skill": "gstack-upgrade",
-    "must_contain": ["upgrade", "global", "vendored", "what's new"]
-  }
-]
+{
+  "skill": "gstack-upgrade",
+  "version": "1.1.0",
+  "cases": [
+    {
+      "id": "ko-upgrade",
+      "prompt": "gstack 업데이트 최신으로 올려줘.",
+      "assertions": [
+        {
+          "id": "detects-install-type",
+          "text": "The agent auto-detects whether gstack is a global or vendored install."
+        },
+        {
+          "id": "upgrades-gstack",
+          "text": "The agent upgrades gstack to the latest version."
+        },
+        {
+          "id": "shows-changelog",
+          "text": "The agent shows a changelog summary of the gstack upgrade."
+        }
+      ]
+    },
+    {
+      "id": "en-upgrade",
+      "prompt": "Upgrade the tools to the latest version.",
+      "assertions": [
+        {
+          "id": "upgrades-en",
+          "text": "The agent upgrades the gstack tools to the latest version."
+        },
+        {
+          "id": "changelog-en",
+          "text": "The agent presents the changelog summary after upgrading."
+        }
+      ]
+    }
+  ]
+}

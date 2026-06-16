@@ -1,0 +1,31 @@
+{
+  "skill": "obsidian-cli",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "search-vault-ko",
+      "prompt": "옵시디언 노트 검색해서 'projectX' 들어간 노트 찾아줘.",
+      "assertions": [
+        { "id": "uses-cli", "text": "The skill uses the Obsidian CLI to search the vault." },
+        { "id": "returns-matches", "text": "The skill returns the notes matching the search term." }
+      ]
+    },
+    {
+      "id": "reload-plugin-en",
+      "prompt": "Reload plugin in my vault and capture any errors it throws.",
+      "assertions": [
+        { "id": "reloads-plugin", "text": "The skill reloads the specified Obsidian plugin via the CLI." },
+        { "id": "captures-errors", "text": "The skill captures any errors produced during the reload." },
+        { "id": "cli-driven", "text": "The action is performed through the Obsidian CLI rather than manually editing files." }
+      ]
+    },
+    {
+      "id": "manage-notes-en",
+      "prompt": "Manage Obsidian notes — create a new task note and set its properties.",
+      "assertions": [
+        { "id": "creates-note", "text": "The skill creates the new note via the Obsidian CLI." },
+        { "id": "sets-properties", "text": "The skill sets the note's properties and task as requested." }
+      ]
+    }
+  ]
+}

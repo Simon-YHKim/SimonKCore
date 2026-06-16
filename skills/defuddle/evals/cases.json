@@ -1,0 +1,31 @@
+{
+  "skill": "defuddle",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "korean-clean-extract",
+      "prompt": "이 링크 본문만 깔끔하게 정리해줘 https://example.com/blog/post",
+      "assertions": [
+        { "id": "uses-defuddle-cli", "text": "The agent uses the Defuddle CLI to extract the page rather than WebFetch." },
+        { "id": "returns-clean-markdown", "text": "The agent returns clean markdown with navigation and clutter removed." },
+        { "id": "saves-tokens", "text": "The agent frames the clean extraction as a way to save tokens versus raw HTML." }
+      ]
+    },
+    {
+      "id": "english-read-url",
+      "prompt": "Read this article for me: https://news.example.com/story",
+      "assertions": [
+        { "id": "extracts-article-body", "text": "The agent extracts the article body as markdown via Defuddle." },
+        { "id": "no-webfetch-for-html", "text": "The agent uses Defuddle instead of WebFetch for this standard HTML page." }
+      ]
+    },
+    {
+      "id": "skips-markdown-url",
+      "prompt": "Fetch https://raw.githubusercontent.com/org/repo/main/README.md",
+      "assertions": [
+        { "id": "detects-md-extension", "text": "The agent detects the .md extension and does NOT use Defuddle." },
+        { "id": "uses-webfetch-instead", "text": "The agent uses WebFetch directly because the URL is already markdown." }
+      ]
+    }
+  ]
+}

@@ -1,17 +1,52 @@
-[
-  {
-    "name": "trigger by ko alias",
-    "user_input": "design.md \ucd5c\uc2e0\ud654",
-    "expected_skill": "designmd-upgrade"
-  },
-  {
-    "name": "trigger by slash command",
-    "user_input": "/designmd-upgrade",
-    "expected_skill": "designmd-upgrade"
-  },
-  {
-    "name": "trigger by en alias",
-    "user_input": "upgrade design.md",
-    "expected_skill": "designmd-upgrade"
-  }
-]
+{
+  "skill": "designmd-upgrade",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-upgrade",
+      "prompt": "design.md 최신화",
+      "assertions": [
+        {
+          "id": "detects-vendored-designmd",
+          "text": "The agent recognizes this as a request to upgrade the vendored design.md stack."
+        },
+        {
+          "id": "ff-only-pull",
+          "text": "The agent performs a fast-forward-only git pull of the design.md vendor."
+        },
+        {
+          "id": "skip-if-dirty",
+          "text": "The agent skips the upgrade when the working tree is dirty."
+        }
+      ]
+    },
+    {
+      "id": "slash-command",
+      "prompt": "/designmd-upgrade",
+      "assertions": [
+        {
+          "id": "invokes-upgrade",
+          "text": "The slash command invokes the design.md upgrade workflow."
+        },
+        {
+          "id": "changelog-output",
+          "text": "The agent produces a changelog summary of what changed in the design.md vendor."
+        }
+      ]
+    },
+    {
+      "id": "en-upgrade",
+      "prompt": "upgrade design.md",
+      "assertions": [
+        {
+          "id": "updates-vendor",
+          "text": "The agent updates the vendored design.md stack to the latest version."
+        },
+        {
+          "id": "reports-changes",
+          "text": "The agent reports the upgraded vendor state and changelog."
+        }
+      ]
+    }
+  ]
+}
