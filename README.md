@@ -1,5 +1,7 @@
 # SimonKCore
 
+![version](https://img.shields.io/badge/version-0.2.0-5b8cff) ![license](https://img.shields.io/badge/license-MIT-green) [![validate](https://github.com/Simon-YHKim/SimonKCore/actions/workflows/validate-plugin.yml/badge.svg)](https://github.com/Simon-YHKim/SimonKCore/actions/workflows/validate-plugin.yml)
+
 > SimonK 플러그인 공유 인프라 (위임·모델라우팅·메모리·지식도구)
 
 공유 라이브러리 — 상위 오케스트레이터 없음. 다른 플러그인이 의존.
