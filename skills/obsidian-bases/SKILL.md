@@ -1,6 +1,7 @@
 ---
 name: obsidian-bases
-description: Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with .base files, creating database-like views of notes, or when the user mentions Bases, table views, card views, filters, or formulas in Obsidian.
+description: >
+  Use when working with Obsidian Bases (.base files) — creating database-like views of notes, or when the user mentions Bases, table views, card views, filters, or formulas in Obsidian. Triggers on "베이스 만들어줘", "테이블 뷰 추가", "노트 데이터베이스", "create a base", "edit .base file", "table view", "card view", "Obsidian base formula". Creates and edits .base files with views, filters, formulas, and summaries.
 version: 1.0.0
 ---
 
@@ -496,3 +497,10 @@ formulas:
 - [Views](https://help.obsidian.md/bases/views)
 - [Formulas](https://help.obsidian.md/formulas)
 - [Complete Functions Reference](references/FUNCTIONS_REFERENCE.md)
+
+## 완료 보고 (HTML) — 표준
+작업을 끝내면 **HTML 완료 보고서**를 생성한다 (SimonKCore `completion-report` 표준).
+- 첫 화면은 **심플 요약**(한눈 카드 한 줄) + 직관 그래픽/차트(인라인 SVG)·이미지.
+- 각 항목 옆 **[자세히] 버튼**(`<details>`)을 펼치면 상세 — 처음부터 쏟지 않는다(progressive disclosure).
+- 자체완결 1파일(인라인 CSS/SVG, 무JS) · 사용자 언어 · 현지시간 스탬프.
+- Core 있으면 `completion-report` 호출, 없으면 동일 형식으로 인라인 생성.

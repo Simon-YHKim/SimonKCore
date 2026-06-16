@@ -1,10 +1,8 @@
 ---
 name: completion-report
+version: 0.2.0
 description: >
-  플러그인 작업 완료 후 자체완결 HTML 보고서를 생성한다 — 이미지/스크린샷·표·차트(인라인 SVG)를 적극 사용하고,
-  사용자 언어로 작성하며, 현지 시간을 불러와 로케일 형식으로 완료 시각을 남긴다. 트리거 "작업 보고서", "완료 리포트",
-  "HTML 보고", "결과 보고서 만들어", "completion report", /completion-report. 모든 오케스트레이터(skstack·skdesign·
-  skmarket·skaihub)가 완료 직후 호출하는 공용 스킬(SimonKCore).
+  Use when a plugin task finishes and the user wants a self-contained completion report. Triggers on "작업 보고서", "완료 리포트", "HTML 보고", "결과 보고서 만들어", "completion report", /completion-report. Creates a self-contained HTML report that leads with a simple at-a-glance summary plus intuitive images/screenshots, tables, and inline-SVG charts — where each item has a [자세히] expand button (progressive disclosure) revealing detail on demand — written in the user's language and stamped with local time in locale format. Shared SimonKCore skill called by every skill/orchestrator (skstack, skdesign, skmarket, skaihub) right after completion.
 allowed-tools:
   - Read
   - Write
@@ -18,9 +16,10 @@ allowed-tools:
 작업이 끝나면 "무엇을·어떻게·결과"를 한 장의 HTML로. **글보다 시각**(표·차트·이미지)이 우선.
 
 ## 0. 원칙
-- **자체완결 HTML** — 인라인 CSS + 인라인 SVG 차트. 외부 의존·빌드 없음. 어디서 열어도 동일.
-- **사용자 언어** — 대화에서 쓰인 언어로 보고서 전체 작성(한국어면 한국어, 영어면 영어 …).
+- **자체완결 HTML** — 인라인 CSS + 인라인 SVG 차트 + `<details>`(무JS). 외부 의존·빌드 없음. 어디서 열어도 동일.
+- **심플 우선 + 점진 공개(progressive disclosure)** — 첫 화면은 한눈 요약(심플 카드 한 줄). 각 항목 옆 **[자세히] 버튼**(`<details><summary>`)을 누르면 상세가 펼쳐진다. 상세를 처음부터 쏟지 않는다.
 - **시각 우선** — 표 + 차트(인라인 SVG bar/line/donut) + 이미지/스크린샷 적극. 설명이 길면 그래픽이 실패한 것.
+- **사용자 언어** — 대화에서 쓰인 언어로 보고서 전체 작성(한국어면 한국어, 영어면 영어 …).
 - **현지 시간 명시** — 완료 시각을 로케일 형식으로(아래 표). 추정 금지 — 시스템 시간을 실제로 읽는다.
 
 ## 1. 완료 시각 (로케일 형식)
@@ -38,11 +37,13 @@ allowed-tools:
 
 ## 2. 보고서 섹션 (순서)
 1. **헤더** — 작업명 · 플러그인 · **완료 시각(로케일 형식)** · 한 줄 요약
-2. **무엇을 했나** — 표(항목 / 상태 / 산출물). 상태는 색 배지(완료/부분/대기)
-3. **결과·지표** — 인라인 SVG 차트(전/후 비교 bar, 추세 line, 비율 donut). 숫자가 있으면 반드시 차트로
+2. **무엇을 했나** — 항목별 카드: 심플 한 줄(이름 · 상태 색배지 · 산출물) + **[자세히] 버튼**(`<details>`)을 펼치면 그 항목의 상세(무엇을·왜·어떻게). 첫 화면은 요약만.
+3. **결과·지표** — 인라인 SVG 차트(전/후 비교 bar, 추세 line, 비율 donut). 숫자가 있으면 반드시 차트로. 수치 근거·계산은 [자세히] 안에.
 4. **시각 증거** — 스크린샷/생성 이미지/다이어그램(있으면 `<img>` 임베드 또는 base64). 디자인·UI 작업은 필수
 5. **다음 단계** — 남은 일·권장 후속(체크리스트)
 6. **푸터** — 생성 시각·도구·관련 링크
+
+**점진 공개 규칙**: 한 화면에 글 폭주 금지(정보 밀도 — 한 메시지·한 그래픽). 요약은 스캔 가능하게, 깊이는 버튼 뒤로. `<details>`만 사용(JS·외부 라이브러리 금지) → 자체완결 유지.
 
 ## 3. 생성 절차
 1. 사용자 언어 확정. `localtime.mjs`로 완료 시각 획득.

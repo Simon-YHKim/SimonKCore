@@ -1,17 +1,48 @@
-[
-  {
-    "name": "trigger ko 1",
-    "user_input": "\uc6cc\ub4dc \ubb38\uc11c \ub9cc\ub4e4\uc5b4",
-    "expected_skill": "office-docs"
-  },
-  {
-    "name": "trigger slash",
-    "user_input": "/office-docs",
-    "expected_skill": "office-docs"
-  },
-  {
-    "name": "trigger en 1",
-    "user_input": "create docx",
-    "expected_skill": "office-docs"
-  }
-]
+{
+  "skill": "office-docs",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-word",
+      "prompt": "워드 문서 만들어",
+      "assertions": [
+        {
+          "id": "generates-docx",
+          "text": "The agent generates a native Word (Docx) document."
+        },
+        {
+          "id": "uses-python-docx",
+          "text": "The agent uses python-docx to produce the Word file."
+        }
+      ]
+    },
+    {
+      "id": "slash-command",
+      "prompt": "/office-docs",
+      "assertions": [
+        {
+          "id": "invokes-office",
+          "text": "The slash command invokes the office document generation workflow."
+        },
+        {
+          "id": "supports-formats",
+          "text": "The agent can produce Docx, Xlsx, Pptx, or PDF outputs."
+        }
+      ]
+    },
+    {
+      "id": "en-docx",
+      "prompt": "create docx",
+      "assertions": [
+        {
+          "id": "creates-native-docx",
+          "text": "The agent creates a native Docx file using python-docx."
+        },
+        {
+          "id": "office-toolchain",
+          "text": "The agent relies on the python-docx/openpyxl/python-pptx/weasyprint toolchain for Office output."
+        }
+      ]
+    }
+  ]
+}

@@ -1,42 +1,80 @@
-[
-  {
-    "name": "Korean trigger — 관점 검증",
-    "user_input": "관점 검증해줘",
-    "expected_skill": "perspectives"
-  },
-  {
-    "name": "Korean trigger — blind spot",
-    "user_input": "내가 놓친 시각 찾아줘",
-    "expected_skill": "perspectives"
-  },
-  {
-    "name": "Slash command base",
-    "user_input": "/perspectives",
-    "expected_skill": "perspectives"
-  },
-  {
-    "name": "Recall mode",
-    "user_input": "/perspectives recall",
-    "expected_skill": "perspectives"
-  },
-  {
-    "name": "Focus mode",
-    "user_input": "/perspectives focus user",
-    "expected_skill": "perspectives"
-  },
-  {
-    "name": "English trigger",
-    "user_input": "critical review of this session",
-    "expected_skill": "perspectives"
-  },
-  {
-    "name": "Negative — code review routes to /code-review or /codex",
-    "user_input": "review this diff",
-    "expected_skill": "code-review"
-  },
-  {
-    "name": "Negative — plan stress test routes to grill-me",
-    "user_input": "이 계획 깨봐",
-    "expected_skill": "grill-me"
-  }
-]
+{
+  "skill": "perspectives",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-audit",
+      "prompt": "관점 검증해줘",
+      "assertions": [
+        {
+          "id": "audits-blind-spots",
+          "text": "The agent audits the session for blind spots."
+        },
+        {
+          "id": "core-5",
+          "text": "The agent runs the Core 5 audit covering User, Business, Technical, Security, and Future-self perspectives."
+        },
+        {
+          "id": "perspectives-md",
+          "text": "The agent writes findings to an accumulating perspectives.md."
+        }
+      ]
+    },
+    {
+      "id": "slash-command",
+      "prompt": "/perspectives",
+      "assertions": [
+        {
+          "id": "invokes-audit",
+          "text": "The slash command invokes the perspectives blind-spot audit."
+        },
+        {
+          "id": "session-stakeholders",
+          "text": "The agent includes session-specific stakeholders beyond the Core 5."
+        }
+      ]
+    },
+    {
+      "id": "en-critical-review",
+      "prompt": "critical review of this session",
+      "assertions": [
+        {
+          "id": "core-5-en",
+          "text": "The agent performs a Core 5 blind-spot audit of the session."
+        },
+        {
+          "id": "accumulating-md",
+          "text": "The agent appends the audit to the accumulating perspectives.md."
+        }
+      ]
+    },
+    {
+      "id": "negative-code-review",
+      "prompt": "review this diff",
+      "assertions": [
+        {
+          "id": "routes-to-code-review",
+          "text": "The agent routes this diff review request to the code-review skill."
+        },
+        {
+          "id": "does-not-trigger-perspectives",
+          "text": "The agent does not trigger the perspectives session audit for a diff review."
+        }
+      ]
+    },
+    {
+      "id": "negative-grill-me",
+      "prompt": "이 계획 깨봐",
+      "assertions": [
+        {
+          "id": "routes-to-grill-me",
+          "text": "The agent routes this plan-breaking request to the grill-me skill."
+        },
+        {
+          "id": "does-not-trigger-perspectives-grill",
+          "text": "The agent does not trigger perspectives for a request to attack a plan."
+        }
+      ]
+    }
+  ]
+}

@@ -1,14 +1,38 @@
-[
-  {
-    "name": "trigger_korean_web_session",
-    "input": "Claude Code on the web 쓰는데 매 세션마다 의존성 설치되게 SessionStart hook 만들어줘.",
-    "expected_skill": "session-start-hook",
-    "must_contain": ["SessionStart", "session-start.sh", "idempotent", "bootstrap"]
-  },
-  {
-    "name": "trigger_english_hook_setup",
-    "input": "Set up a startup hook so tests and linters work on every cloud session.",
-    "expected_skill": "session-start-hook",
-    "must_contain": ["hook", "marker", "install", "environment"]
-  }
-]
+{
+  "skill": "session-start-hook",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-web-hook",
+      "prompt": "Claude Code on the web 쓰는데 매 세션마다 의존성 설치되게 SessionStart hook 만들어줘.",
+      "assertions": [
+        {
+          "id": "creates-hook-file",
+          "text": "The agent creates a SessionStart hook at .claude/hooks/session-start.sh."
+        },
+        {
+          "id": "idempotent-install",
+          "text": "The hook installs dependencies idempotently on every session."
+        },
+        {
+          "id": "marker-shortcircuit",
+          "text": "The hook uses a marker to short-circuit when setup has already run."
+        }
+      ]
+    },
+    {
+      "id": "en-startup-hook",
+      "prompt": "Set up a startup hook so tests and linters work on every cloud session.",
+      "assertions": [
+        {
+          "id": "env-aware-bootstrap",
+          "text": "The agent creates an env-aware bootstrap hook so tests and linters work on cloud sessions."
+        },
+        {
+          "id": "session-start-sh",
+          "text": "The agent produces a .claude/hooks/session-start.sh with idempotent install logic."
+        }
+      ]
+    }
+  ]
+}

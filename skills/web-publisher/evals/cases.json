@@ -1,17 +1,48 @@
-[
-  {
-    "name": "trigger ko 1",
-    "user_input": "\uc6f9\uc0ac\uc774\ud2b8\uc5d0 \uc62c\ub824",
-    "expected_skill": "web-publisher"
-  },
-  {
-    "name": "trigger slash",
-    "user_input": "/web-publisher",
-    "expected_skill": "web-publisher"
-  },
-  {
-    "name": "trigger en 1",
-    "user_input": "publish to website",
-    "expected_skill": "web-publisher"
-  }
-]
+{
+  "skill": "web-publisher",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-publish",
+      "prompt": "웹사이트에 올려",
+      "assertions": [
+        {
+          "id": "headless-browser",
+          "text": "The agent automates the website using a headless browser."
+        },
+        {
+          "id": "login-form-upload",
+          "text": "The agent handles login, form filling, and file upload using stored cookies."
+        }
+      ]
+    },
+    {
+      "id": "slash-command",
+      "prompt": "/web-publisher",
+      "assertions": [
+        {
+          "id": "invokes-publisher",
+          "text": "The slash command invokes the web-publisher automation workflow."
+        },
+        {
+          "id": "form-schema",
+          "text": "The agent uses a stored form schema and cookies to drive the website."
+        }
+      ]
+    },
+    {
+      "id": "en-publish",
+      "prompt": "publish to website",
+      "assertions": [
+        {
+          "id": "automates-site",
+          "text": "The agent automates the existing website to publish content via headless browser."
+        },
+        {
+          "id": "extract-info",
+          "text": "The agent can also extract information from the site as part of the automation."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "skill": "checkpoint",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "save-progress-korean",
+      "prompt": "잠깐 쉬었다 올게, 지금까지 한 거 checkpoint 로 저장해줘",
+      "assertions": [
+        { "id": "captures-git-state", "text": "It captures the current git state including the active branch as part of the saved checkpoint." },
+        { "id": "records-decisions-and-remaining", "text": "It records decisions made so far and the work that still remains." },
+        { "id": "writes-checkpoint-artifact", "text": "It persists the checkpoint to disk so it can be resumed later in another session." }
+      ]
+    },
+    {
+      "id": "resume-where-i-left-off",
+      "prompt": "Where was I? I want to pick up where I left off on this branch.",
+      "assertions": [
+        { "id": "locates-latest-checkpoint", "text": "It locates the most recent checkpoint or recent project artifacts for the current branch." },
+        { "id": "summarizes-prior-state", "text": "It summarizes the prior git state, decisions, and remaining work so the user can resume exactly where they stopped." },
+        { "id": "welcome-back-briefing", "text": "It gives a short welcome-back briefing referencing the last session before continuing." }
+      ]
+    },
+    {
+      "id": "resume-across-handoff",
+      "prompt": "what was I working on before the workspace handoff to another branch?",
+      "assertions": [
+        { "id": "handles-conductor-handoff", "text": "It supports resuming working state even across Conductor workspace handoffs between branches." },
+        { "id": "reports-branch-context", "text": "It reports the branch context and what was in progress at the time the checkpoint was saved." }
+      ]
+    }
+  ]
+}

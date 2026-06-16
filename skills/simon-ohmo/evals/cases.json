@@ -1,0 +1,31 @@
+{
+  "skill": "simon-ohmo",
+  "version": "0.1.1",
+  "cases": [
+    {
+      "id": "ko-closed-network",
+      "prompt": "폐쇄망 운영 시그니처 작품 활성화 해줘",
+      "assertions": [
+        { "id": "status-check", "text": "The response runs a status check against the five entry conditions for the Phase 6 personal agent." },
+        { "id": "prereq-verify", "text": "It verifies prerequisites rather than acting as a production agent." },
+        { "id": "deferral-notice", "text": "It returns a deferral notice with a checklist because the skill is a Phase 6 placeholder." }
+      ]
+    },
+    {
+      "id": "en-personal-agent",
+      "prompt": "Activate the self.md personal agent",
+      "assertions": [
+        { "id": "not-production", "text": "The response makes clear the agent is not yet usable in production." },
+        { "id": "entry-conditions", "text": "It reports on the five entry conditions and defers activation with a checklist." }
+      ]
+    },
+    {
+      "id": "slash-simon-ohmo",
+      "prompt": "/simon-ohmo",
+      "assertions": [
+        { "id": "placeholder-status", "text": "The skill produces a Phase 6 placeholder status check covering entry conditions and prerequisites." },
+        { "id": "deferral-output", "text": "It issues a deferral notice instead of running a live agent." }
+      ]
+    }
+  ]
+}

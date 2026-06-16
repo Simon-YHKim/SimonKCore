@@ -1,0 +1,31 @@
+{
+  "skill": "session-context-export",
+  "version": "0.1.0",
+  "cases": [
+    {
+      "id": "ko-session-end",
+      "prompt": "세션 종료 — 다음 세션 준비해줘",
+      "assertions": [
+        { "id": "snapshot-file", "text": "The response writes a sprint state snapshot to .simonk/session-<timestamp>.md." },
+        { "id": "recent-commits", "text": "It includes recent commits from both repositories." },
+        { "id": "reentry-prompt", "text": "It provides a re-entry prompt template for the next session." }
+      ]
+    },
+    {
+      "id": "en-context-export",
+      "prompt": "context export please — save this session for hand-off",
+      "assertions": [
+        { "id": "pending-tasks", "text": "The response produces a pending tasks list as part of the export." },
+        { "id": "snapshot-and-reentry", "text": "It generates the session snapshot file and a next-session re-entry prompt template." }
+      ]
+    },
+    {
+      "id": "slash-export",
+      "prompt": "/session-context-export",
+      "assertions": [
+        { "id": "snapshot-output", "text": "The skill writes a sprint state snapshot under .simonk/ with recent commits and pending tasks." },
+        { "id": "reentry-template", "text": "It outputs a re-entry prompt template for resuming in the next session." }
+      ]
+    }
+  ]
+}

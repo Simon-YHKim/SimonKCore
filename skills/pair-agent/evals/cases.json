@@ -1,0 +1,31 @@
+{
+  "skill": "pair-agent",
+  "version": "0.1.0",
+  "cases": [
+    {
+      "id": "pair-agent-en",
+      "prompt": "Pair agent with my browser so another agent can use it.",
+      "assertions": [
+        { "id": "pairs-remote-agent", "text": "The skill pairs a remote AI agent with the user's browser." },
+        { "id": "setup-key", "text": "The skill produces a setup key and connection instructions for the remote agent." }
+      ]
+    },
+    {
+      "id": "share-browser-ko",
+      "prompt": "내 브라우저 공유해서 원격 에이전트가 쓸 수 있게 해줘.",
+      "assertions": [
+        { "id": "shares-browser", "text": "The skill shares the user's browser with a remote agent." },
+        { "id": "scoped-tab", "text": "The remote agent receives its own tab with scoped access." },
+        { "id": "connection-instructions", "text": "The skill provides connection instructions for the remote agent to join." }
+      ]
+    },
+    {
+      "id": "give-access-en",
+      "prompt": "Give browser access to a Codex agent running remotely.",
+      "assertions": [
+        { "id": "grants-access", "text": "The skill grants the remote Codex agent access to the browser." },
+        { "id": "compatible-agents", "text": "The setup supports remote agents such as OpenClaw, Hermes, Codex, or Cursor." }
+      ]
+    }
+  ]
+}

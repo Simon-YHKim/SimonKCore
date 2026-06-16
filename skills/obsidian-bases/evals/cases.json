@@ -1,0 +1,32 @@
+{
+  "skill": "obsidian-bases",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "create-base-ko",
+      "prompt": "내 노트들로 베이스 만들어줘, 테이블 뷰로 보고 싶어.",
+      "assertions": [
+        { "id": "creates-base-file", "text": "The skill creates a new .base file for the user's notes." },
+        { "id": "adds-table-view", "text": "The created base includes a table view as requested." },
+        { "id": "valid-base-syntax", "text": "The output uses valid Obsidian Bases configuration with views and filters." }
+      ]
+    },
+    {
+      "id": "edit-base-formula-en",
+      "prompt": "Edit my .base file to add a card view and a formula column.",
+      "assertions": [
+        { "id": "edits-base", "text": "The skill edits the existing .base file rather than creating an unrelated note." },
+        { "id": "adds-card-view", "text": "The edit adds a card view to the base." },
+        { "id": "adds-formula", "text": "The edit adds an Obsidian base formula column." }
+      ]
+    },
+    {
+      "id": "note-database-en",
+      "prompt": "I want a note database with filters and a summary row.",
+      "assertions": [
+        { "id": "builds-base-db", "text": "The skill builds a .base file functioning as a note database." },
+        { "id": "adds-filters-summary", "text": "The base includes filters and a summary row as requested." }
+      ]
+    }
+  ]
+}

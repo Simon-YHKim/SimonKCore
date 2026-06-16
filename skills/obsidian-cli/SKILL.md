@@ -1,6 +1,7 @@
 ---
 name: obsidian-cli
-description: Interact with Obsidian vaults using the Obsidian CLI to read, create, search, and manage notes, tasks, properties, and more. Also supports plugin and theme development with commands to reload plugins, run JavaScript, capture errors, take screenshots, and inspect the DOM. Use when the user asks to interact with their Obsidian vault, manage notes, search vault content, perform vault operations from the command line, or develop and debug Obsidian plugins and themes.
+description: >
+  Use when the user asks to interact with their Obsidian vault from the command line — managing notes, searching vault content, or developing and debugging Obsidian plugins and themes. Triggers on "옵시디언 노트 검색", "볼트 정리해줘", "플러그인 리로드", "search my vault", "manage Obsidian notes", "reload plugin", "Obsidian CLI". Reads, creates, searches, and manages notes, tasks, and properties via the Obsidian CLI; also reloads plugins, runs JavaScript, captures errors, takes screenshots, and inspects the DOM.
 version: 1.0.0
 ---
 
@@ -105,3 +106,10 @@ obsidian dev:mobile on
 ```
 
 Run `obsidian help` to see additional developer commands including CDP and debugger controls.
+
+## 완료 보고 (HTML) — 표준
+작업을 끝내면 **HTML 완료 보고서**를 생성한다 (SimonKCore `completion-report` 표준).
+- 첫 화면은 **심플 요약**(한눈 카드 한 줄) + 직관 그래픽/차트(인라인 SVG)·이미지.
+- 각 항목 옆 **[자세히] 버튼**(`<details>`)을 펼치면 상세 — 처음부터 쏟지 않는다(progressive disclosure).
+- 자체완결 1파일(인라인 CSS/SVG, 무JS) · 사용자 언어 · 현지시간 스탬프.
+- Core 있으면 `completion-report` 호출, 없으면 동일 형식으로 인라인 생성.

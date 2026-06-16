@@ -1,0 +1,31 @@
+{
+  "skill": "open-gstack-browser",
+  "version": "0.2.0",
+  "cases": [
+    {
+      "id": "open-browser-en",
+      "prompt": "Open gstack browser so you can control my browser.",
+      "assertions": [
+        { "id": "launches-chromium", "text": "The skill launches the GStack Browser, an AI-controlled Chromium window." },
+        { "id": "sidebar-feed", "text": "The launched window includes the sidebar extension with a live activity feed and chat." }
+      ]
+    },
+    {
+      "id": "launch-chrome-ko",
+      "prompt": "크롬 브라우저 띄워줘, 실제 브라우저로 보여줘.",
+      "assertions": [
+        { "id": "launches-real-chrome", "text": "The skill launches a real controlled Chromium browser window." },
+        { "id": "side-panel", "text": "The browser shows the side panel with activity feed and chat." },
+        { "id": "stealth", "text": "The launched browser has anti-bot stealth built in." }
+      ]
+    },
+    {
+      "id": "show-browser-en",
+      "prompt": "Show me the browser — launch a real browser I can watch.",
+      "assertions": [
+        { "id": "produces-window", "text": "The skill produces a controlled Chromium window the user can watch." },
+        { "id": "live-feed", "text": "The window surfaces a live sidebar activity feed of what the agent is doing." }
+      ]
+    }
+  ]
+}

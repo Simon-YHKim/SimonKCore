@@ -1,10 +1,8 @@
 ---
 name: persona-validate
+version: 0.1.0
 description: >
-  어떤 작업물·계획·산출물이든 출시 전에 다양한 사용자 + 도메인 전문가 페르소나 패널로 검증해 빈틈을 찾는다.
-  트리거 "페르소나 검증", "전문가 리뷰 패널", "이거 검증해줘", "출시 전 점검", "expert review", /persona-validate.
-  일반 사용자 페르소나(연령·직업·자산·테크 다양)로 접근성·커버리지를, 프로페셔널 전문가 페르소나로 정확성·리스크·베스트프랙티스를
-  채점하고, 우선순위화된 개선 backlog를 낸다. 모든 도메인(빌드·디자인·마케팅·AI·문서·계획)에 적용. SimonKCore 공유 스킬.
+  Use when the user wants to validate any artifact, plan, or deliverable before launch against a panel of diverse user and domain-expert personas to find gaps. Triggers on "페르소나 검증", "전문가 리뷰 패널", "이거 검증해줘", "출시 전 점검", "expert review", /persona-validate. Produces a prioritized improvement backlog, scoring accessibility and coverage with general-user personas (varied age, job, assets, tech) and accuracy, risk, and best-practices with professional expert personas. Applies to every domain (build, design, marketing, AI, docs, planning). Shared SimonKCore skill.
 allowed-tools:
   - Read
   - Grep
@@ -58,3 +56,10 @@ allowed-tools:
 - 단일 정답 강요 금지: 전문가 의견 갈리면 양론 병기.
 
 관련: [[agent-delegate]], [[grill-me]](단일 인터뷰), [[perspectives]](다관점), [[experts]], [[personas]].
+
+## 완료 보고 (HTML) — 표준
+작업을 끝내면 **HTML 완료 보고서**를 생성한다 (SimonKCore `completion-report` 표준).
+- 첫 화면은 **심플 요약**(한눈 카드 한 줄) + 직관 그래픽/차트(인라인 SVG)·이미지.
+- 각 항목 옆 **[자세히] 버튼**(`<details>`)을 펼치면 상세 — 처음부터 쏟지 않는다(progressive disclosure).
+- 자체완결 1파일(인라인 CSS/SVG, 무JS) · 사용자 언어 · 현지시간 스탬프.
+- Core 있으면 `completion-report` 호출, 없으면 동일 형식으로 인라인 생성.

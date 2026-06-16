@@ -1,17 +1,48 @@
-[
-  {
-    "name": "trigger ko 1",
-    "user_input": "\ube44\ub514\uc624 \uc790\ub9c9 \uac00\uc838\uc640",
-    "expected_skill": "notebooklm-import"
-  },
-  {
-    "name": "trigger slash",
-    "user_input": "/notebooklm-import",
-    "expected_skill": "notebooklm-import"
-  },
-  {
-    "name": "trigger en 1",
-    "user_input": "import video transcripts",
-    "expected_skill": "notebooklm-import"
-  }
-]
+{
+  "skill": "notebooklm-import",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-import",
+      "prompt": "비디오 자막 가져와",
+      "assertions": [
+        {
+          "id": "uses-ytdlp",
+          "text": "The agent uses yt-dlp to fetch the YouTube transcript."
+        },
+        {
+          "id": "creates-wiki-page",
+          "text": "The agent converts the transcript into a SimonKWiki page via wiki ingest."
+        }
+      ]
+    },
+    {
+      "id": "slash-command",
+      "prompt": "/notebooklm-import",
+      "assertions": [
+        {
+          "id": "invokes-import",
+          "text": "The slash command invokes the notebooklm import workflow."
+        },
+        {
+          "id": "handles-sources",
+          "text": "The agent can handle YouTube transcripts, PDFs, and web pages as input."
+        }
+      ]
+    },
+    {
+      "id": "en-import",
+      "prompt": "import video transcripts",
+      "assertions": [
+        {
+          "id": "fetch-transcript",
+          "text": "The agent fetches the video transcript and ingests it into SimonKWiki."
+        },
+        {
+          "id": "defuddle-web",
+          "text": "The agent uses defuddle for web pages when importing source material."
+        }
+      ]
+    }
+  ]
+}

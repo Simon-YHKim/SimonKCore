@@ -1,0 +1,34 @@
+{
+  "skill": "json-canvas",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "create-mind-map-korean",
+      "prompt": "이 주제로 마인드맵 그려줘서 .canvas 파일로 만들어줘",
+      "assertions": [
+        { "id": "creates-canvas-file", "text": "It creates a .canvas file with the base structure containing nodes and edges arrays following the JSON Canvas spec." },
+        { "id": "unique-hex-ids", "text": "It generates unique 16-character hexadecimal IDs for each node." },
+        { "id": "required-node-fields", "text": "It gives each node the required fields id, type, x, y, width, and height." },
+        { "id": "validates-references", "text": "It validates that all edge fromNode and toNode values reference existing node IDs and that JSON is parseable." }
+      ]
+    },
+    {
+      "id": "connect-nodes-flowchart",
+      "prompt": "create a canvas flowchart and connect the two boxes with a labeled arrow",
+      "assertions": [
+        { "id": "adds-edge", "text": "It adds an edge with a unique id whose fromNode and toNode reference the two existing node IDs." },
+        { "id": "labeled-arrow", "text": "It sets a label on the edge and uses an arrow end so the connection reads as a directed flow." },
+        { "id": "validates-edge-refs", "text": "It confirms both endpoints resolve to existing nodes after adding the connection." }
+      ]
+    },
+    {
+      "id": "edit-existing-canvas",
+      "prompt": "edit my .canvas file - move the project group node and recolor it green",
+      "assertions": [
+        { "id": "parses-then-edits", "text": "It reads and parses the existing .canvas file, locates the target node by id, then modifies its position and color." },
+        { "id": "valid-color-value", "text": "It uses a valid canvasColor value such as the green preset or a hex string." },
+        { "id": "rechecks-integrity", "text": "It re-checks ID uniqueness and edge reference integrity after the edit." }
+      ]
+    }
+  ]
+}

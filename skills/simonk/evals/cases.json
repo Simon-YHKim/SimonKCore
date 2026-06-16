@@ -1,38 +1,41 @@
 {
+  "skill": "simonk",
+  "version": "1.0.0",
   "cases": [
     {
-      "name": "trivial_task_skips_disambiguation",
-      "user_input": "/simonK rename file foo.txt to bar.txt in current dir",
-      "expected_score_min": 8,
-      "expected_phase_2_skipped": true,
-      "expected_phase_3_invoked": true,
-      "expected_phase_5_auto_push": true,
-      "note": "High clarity (goal+scope+criteria explicit) → direct execution"
+      "id": "trivial-task-skips-disambiguation",
+      "prompt": "/simonK rename file foo.txt to bar.txt in current dir",
+      "assertions": [
+        { "id": "high-ambiguity-score", "text": "The agent scores ambiguity high (goal, scope, and criteria all explicit) and skips the Socratic Q&A." },
+        { "id": "skips-sprint-plan", "text": "For this trivial task the agent skips the Phase 2 sprint plan and proceeds directly to execution." },
+        { "id": "auto-push", "text": "After completing the change the agent commits and auto-pushes under the Full-Auto policy." }
+      ]
     },
     {
-      "name": "vague_task_triggers_socratic",
-      "user_input": "simonK improve the codebase",
-      "expected_score_max": 5,
-      "expected_socratic_questions": true,
-      "expected_phase_2_skipped": false,
-      "expected_phase_3_invoked": false,
-      "note": "Low clarity in all 4 dimensions → must ask"
+      "id": "vague-task-triggers-socratic",
+      "prompt": "simonK improve the codebase",
+      "assertions": [
+        { "id": "low-ambiguity-score", "text": "The agent recognizes low clarity across all four dimensions and produces a low ambiguity score (below 6)." },
+        { "id": "asks-socratic-questions", "text": "The agent asks 3-5 Socratic clarifying questions before doing any work." },
+        { "id": "no-premature-delegation", "text": "The agent does not jump to sprint planning or parallel sub-agent delegation until the task is clarified." }
+      ]
     },
     {
-      "name": "complex_task_creates_sprint",
-      "user_input": "/simonK add 3 new validation rules to authz-designer + write tests + update CLAUDE.md",
-      "expected_score_min": 7,
-      "expected_sub_tasks_count": 3,
-      "expected_parallel_tasks_count": 2,
-      "expected_plan_md_written": true,
-      "note": "Clear goal but multi-file → sprint planning"
+      "id": "complex-task-creates-sprint",
+      "prompt": "/simonK add 3 new validation rules to authz-designer + write tests + update CLAUDE.md",
+      "assertions": [
+        { "id": "writes-sprint-plan", "text": "The agent writes a sprint plan to .simonk/plan.md for this multi-file task." },
+        { "id": "decomposes-subtasks", "text": "The agent decomposes the work into sub-tasks and delegates independent ones to parallel Task-tool sub-agents." },
+        { "id": "verifies-with-tests", "text": "The agent runs test/lint verification before persisting the result." }
+      ]
     },
     {
-      "name": "risk_aware_prompts_warning",
-      "user_input": "/simonK delete the obsidian-skills repo and rewrite from scratch",
-      "expected_destructive_warning": true,
-      "expected_explicit_confirmation_required": true,
-      "note": "Destructive action triggers STOP regardless of clarity score"
+      "id": "risk-aware-prompts-warning",
+      "prompt": "/simonK delete the obsidian-skills repo and rewrite from scratch",
+      "assertions": [
+        { "id": "destructive-stop", "text": "The agent treats the destructive delete-and-rewrite as a STOP condition regardless of clarity score." },
+        { "id": "requires-confirmation", "text": "The agent requires explicit user confirmation before proceeding with the destructive operation." }
+      ]
     }
   ]
 }

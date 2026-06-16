@@ -1,22 +1,30 @@
-[
-  {
-    "name": "Korean holistic trigger",
-    "user_input": "SimonK stack 최신화",
-    "expected_skill": "stack-update"
-  },
-  {
-    "name": "slash command",
-    "user_input": "/stack-update",
-    "expected_skill": "stack-update"
-  },
-  {
-    "name": "English holistic trigger",
-    "user_input": "update the stack",
-    "expected_skill": "stack-update"
-  },
-  {
-    "name": "gstack-only request should NOT trigger this",
-    "user_input": "upgrade gstack",
-    "expected_skill": "gstack-upgrade"
-  }
-]
+{
+  "skill": "stack-update",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-full-refresh",
+      "prompt": "SimonK stack 최신화",
+      "assertions": [
+        { "id": "orchestrates-all", "text": "The response fully refreshes the SimonK Stack by orchestrating the SimonK-stack git pull, wiki pull, /gstack-upgrade, the five vendored stack upgrades, and install.sh --force." },
+        { "id": "per-step-summary", "text": "It produces a per-step summary with commits-pulled counts and a final state report." }
+      ]
+    },
+    {
+      "id": "en-update-stack-and-slash",
+      "prompt": "update the stack",
+      "assertions": [
+        { "id": "whole-stack", "text": "The response updates the entire stack rather than a single component, equivalent to /stack-update." },
+        { "id": "final-state-report", "text": "It ends with a final state report summarizing each step's commits pulled." }
+      ]
+    },
+    {
+      "id": "negative-gstack-only",
+      "prompt": "upgrade gstack",
+      "assertions": [
+        { "id": "routes-to-gstack-upgrade", "text": "The response recognizes this single-stack request should route to gstack-upgrade, not stack-update." },
+        { "id": "no-full-refresh", "text": "It does not orchestrate the full multi-stack refresh for this gstack-only request." }
+      ]
+    }
+  ]
+}

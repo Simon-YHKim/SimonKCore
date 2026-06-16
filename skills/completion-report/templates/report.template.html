@@ -1,4 +1,5 @@
-<!-- completion-report 템플릿 — 자체완결(인라인 CSS/SVG). {{...}} 를 채우고, 데이터 없는 섹션은 삭제. 사용자 언어로 작성. -->
+<!-- completion-report 템플릿 — 자체완결(인라인 CSS/SVG, 무JS). {{...}} 를 채우고, 데이터 없는 섹션은 삭제. 사용자 언어로 작성.
+     핵심: 한눈 요약(심플) + 직관 그래픽/차트 + 각 항목 [자세히] 버튼(<details>)으로 상세 펼침(progressive disclosure). -->
 <!doctype html><html lang="{{LANG}}"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{{TITLE}} — 완료 보고</title>
@@ -10,10 +11,21 @@
   h1{font-size:24px;margin:0 0 4px}h2{font-size:16px;margin:28px 0 10px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
   .meta{color:var(--muted);font-size:14px}.time{font-variant-numeric:tabular-nums;color:var(--accent);font-weight:600}
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:12px 0}
-  table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
-  th{color:var(--muted);font-weight:600}
+  /* 한눈 요약 항목: 심플 한 줄 + 상태 배지 + [자세히] 버튼 */
+  .item{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .item .name{font-weight:600}.item .art{color:var(--muted);font-size:13px;margin-left:auto}
   .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600}
   .b-ok{background:rgba(62,207,142,.15);color:var(--ok)}.b-part{background:rgba(224,162,60,.15);color:var(--warn)}.b-wait{background:rgba(154,163,178,.15);color:var(--muted)}
+  /* [자세히] 버튼 = <details><summary>. JS 불필요. */
+  details{margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+  details>summary{cursor:pointer;list-style:none;display:inline-block;padding:4px 12px;border:1px solid var(--line);border-radius:999px;
+    font-size:13px;font-weight:600;color:var(--accent);user-select:none}
+  details>summary::-webkit-details-marker{display:none}
+  details>summary::before{content:"자세히 ▸ "}details[open]>summary::before{content:"닫기 ▾ "}
+  details>summary:hover{border-color:var(--accent)}
+  .detail{margin-top:10px;font-size:14px;color:var(--text)}
+  table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600}
   ul{margin:6px 0;padding-left:18px}figure{margin:10px 0}img{max-width:100%;border-radius:8px;border:1px solid var(--line)}
   .foot{color:var(--muted);font-size:12px;margin-top:28px;border-top:1px solid var(--line);padding-top:12px}
 </style></head><body><div class="wrap">
@@ -23,15 +35,18 @@
   <div class="card">{{SUMMARY_ONE_LINE}}</div>
 
   <h2>무엇을 했나</h2>
-  <div class="card"><table>
-    <tr><th>항목</th><th>상태</th><th>산출물</th></tr>
-    <tr><td>{{ITEM}}</td><td><span class="badge b-ok">완료</span></td><td>{{ARTIFACT}}</td></tr>
-    <!-- b-part=부분, b-wait=대기 -->
-  </table></div>
+  <!-- 항목마다: 심플 한 줄 요약(이름·상태·산출물) + [자세히] 버튼 펼치면 상세. 항목 수만큼 .card 복제. -->
+  <div class="card">
+    <div class="item"><span class="name">{{ITEM}}</span><span class="badge b-ok">완료</span><span class="art">{{ARTIFACT}}</span></div>
+    <details><summary></summary>
+      <div class="detail">{{ITEM_DETAIL}}</div>
+    </details>
+  </div>
+  <!-- b-part=부분, b-wait=대기 -->
 
   <h2>결과 · 지표</h2>
   <div class="card">
-    <!-- 예시 bar chart: 전/후 비교. 값 라벨·축 포함. 데이터 있을 때만. -->
+    <!-- 예시 bar chart: 전/후 비교. 값 라벨·축 포함. 데이터 있을 때만(빈 차트 금지). -->
     <svg viewBox="0 0 360 160" width="100%" role="img" aria-label="{{CHART_LABEL}}">
       <line x1="40" y1="130" x2="340" y2="130" stroke="var(--line)"/>
       <rect x="80" y="{{Y_BEFORE}}" width="48" height="{{H_BEFORE}}" fill="var(--muted)"/><text x="104" y="148" fill="var(--muted)" font-size="11" text-anchor="middle">{{LABEL_A}}</text>
@@ -39,6 +54,9 @@
       <text x="104" y="{{T_BEFORE}}" fill="var(--text)" font-size="12" text-anchor="middle">{{VAL_A}}</text>
       <text x="224" y="{{T_AFTER}}" fill="var(--text)" font-size="12" text-anchor="middle">{{VAL_B}}</text>
     </svg>
+    <details><summary></summary>
+      <div class="detail">{{METRICS_DETAIL}}</div>
+    </details>
   </div>
 
   <h2>시각 증거</h2>

@@ -1,0 +1,24 @@
+{
+  "skill": "gcloud-helper",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "vertex-ai-auth-korean",
+      "prompt": "Vertex AI 인증이랑 ADC 설정 좀 도와줘, gcloud 자동 설정해줘",
+      "assertions": [
+        { "id": "auth-status-diagnosis", "text": "It diagnoses the gcloud authentication status, checking for an active account and ADC presence." },
+        { "id": "injects-env-vars", "text": "It injects the GOOGLE_CLOUD_PROJECT and GOOGLE_APPLICATION_CREDENTIALS environment variables into the current session." },
+        { "id": "oauth-oneliner-if-needed", "text": "It provides the browser OAuth one-liner (gcloud auth application-default login) when ADC is missing." }
+      ]
+    },
+    {
+      "id": "gcloud-auth-english",
+      "prompt": "Run /gcloud-helper, my BigQuery auth seems broken and the project might be wrong",
+      "assertions": [
+        { "id": "ghost-project-autofix", "text": "It detects a ghost project that is set in config but does not exist and auto-fixes it by falling back to a valid user project." },
+        { "id": "auth-list-check", "text": "It checks the active account via gcloud auth list as part of the diagnosis." },
+        { "id": "session-only-env", "text": "It sets environment variables only for the current session rather than persisting them, for security." }
+      ]
+    }
+  ]
+}

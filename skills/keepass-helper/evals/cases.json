@@ -1,0 +1,25 @@
+{
+  "skill": "keepass-helper",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "inject-keys-korean",
+      "prompt": "keepass vault 에서 API 키 자동 inject 해줘",
+      "assertions": [
+        { "id": "vault-status-check", "text": "It checks the KeePassXC vault status including the vault path and CLI presence." },
+        { "id": "one-time-master-prompt", "text": "It prompts once for the master password and then injects the known entries for the current session." },
+        { "id": "known-entry-mapping", "text": "It maps known KeePassXC entries (Zotero, Anthropic, OpenAI, Gemini, GitHub) to their corresponding environment variables." },
+        { "id": "master-password-memory-only", "text": "It keeps the master password in current session memory only and never saves it to disk or environment." }
+      ]
+    },
+    {
+      "id": "inject-helper-english",
+      "prompt": "run simonk-keepass-inject so my Anthropic key is available in this session",
+      "assertions": [
+        { "id": "env-var-diagnosis", "text": "It diagnoses which expected environment variables are set versus missing after injection." },
+        { "id": "session-scope-inject", "text": "It injects ANTHROPIC_API_KEY into the current process scope so child processes like claude inherit it." },
+        { "id": "per-session-reinvoke", "text": "It notes that the injection applies only to the current session and must be re-run once per new session." }
+      ]
+    }
+  ]
+}

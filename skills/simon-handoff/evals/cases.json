@@ -1,32 +1,38 @@
-[
-  {
-    "name": "Korean trigger — 핸드오프 해줘",
-    "user_input": "핸드오프 해줘",
-    "expected_skill": "simon-handoff"
-  },
-  {
-    "name": "Korean trigger — 다음 세션 준비",
-    "user_input": "다음 세션 준비해줘",
-    "expected_skill": "simon-handoff"
-  },
-  {
-    "name": "Slash command",
-    "user_input": "/simon-handoff",
-    "expected_skill": "simon-handoff"
-  },
-  {
-    "name": "Short slash command",
-    "user_input": "/handoff",
-    "expected_skill": "simon-handoff"
-  },
-  {
-    "name": "English trigger",
-    "user_input": "session handoff please",
-    "expected_skill": "simon-handoff"
-  },
-  {
-    "name": "Negative — checkpoint should NOT route here",
-    "user_input": "save my current context",
-    "expected_skill": "checkpoint"
-  }
-]
+{
+  "skill": "simon-handoff",
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "ko-handoff",
+      "prompt": "핸드오프 해줘",
+      "assertions": [
+        { "id": "writes-handoff-doc", "text": "The response produces a git-persistent docs/HANDOFF.md that is merged into main." },
+        { "id": "wake-command", "text": "It provides the exact shell command the next session pastes to wake up at full context." }
+      ]
+    },
+    {
+      "id": "ko-next-session",
+      "prompt": "다음 세션 준비해줘",
+      "assertions": [
+        { "id": "handoff-for-resume", "text": "The response hands off the current session so a fresh session can resume." },
+        { "id": "main-merged-doc", "text": "It updates docs/HANDOFF.md and merges it to main for the next session to pull." }
+      ]
+    },
+    {
+      "id": "en-and-slash",
+      "prompt": "session handoff please",
+      "assertions": [
+        { "id": "handoff-doc-and-cmd", "text": "The response generates docs/HANDOFF.md plus the resume shell command, equivalent to /simon-handoff or /handoff." },
+        { "id": "git-persistent", "text": "It makes the handoff git-persistent and main-merged so resume is one git pull away." }
+      ]
+    },
+    {
+      "id": "negative-checkpoint",
+      "prompt": "save my current context",
+      "assertions": [
+        { "id": "routes-to-checkpoint", "text": "The response recognizes this should route to the checkpoint skill, not simon-handoff." },
+        { "id": "no-handoff-trigger", "text": "It does not generate a docs/HANDOFF.md handoff for this saving-context request." }
+      ]
+    }
+  ]
+}
