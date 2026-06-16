@@ -1,5 +1,6 @@
 ---
 name: persona-validate
+version: 0.1.0
 description: >
   어떤 작업물·계획·산출물이든 출시 전에 다양한 사용자 + 도메인 전문가 페르소나 패널로 검증해 빈틈을 찾는다.
   트리거 "페르소나 검증", "전문가 리뷰 패널", "이거 검증해줘", "출시 전 점검", "expert review", /persona-validate.
