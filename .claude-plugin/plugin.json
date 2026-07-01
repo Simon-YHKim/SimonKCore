@@ -44,6 +44,7 @@
     "./skills/perspectives/",
     "./skills/plan-ceo-review/",
     "./skills/project-context-md/",
+    "./skills/semantic-recall/",
     "./skills/session-context-export/",
     "./skills/session-context-tracker/",
     "./skills/session-start-hook/",
