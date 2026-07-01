@@ -147,6 +147,18 @@ JSON format (`--format json` 또는 simonk integration):
 - v0.4: 작업 history 기반 학습 (어떤 task 에서 어떤 모델이 실제 잘 했는지 누적)
 - v1.0: 벤치마크 → 매핑 자동 재계산 (수동 매트릭스 → 가중치 기반 알고리즘)
 
+## 9. MoA 교차검증 레이어 (Fugu 통합, 2026-07-02)
+
+> Sakana **Fugu**(Mixture-of-Agents)의 "선택→위임→**검증→종합**"에서 뒷단(교차검증·종합)을 라우팅에 반영. §1 모델선택이 앞단, 이건 산출물 검증 뒷단. (Fugu의 모델별 역할 고정분담은 Sakana 비공식=추론이라 그대로 이식하지 않음.)
+
+- **트리거 — 고위험 산출물만**(쿼터 보호, 일상 산출물 제외): 머지 diff · DB 스키마 · 보안민감 코드 · 수학/계산 · 비가역 변경(수익화·권한·삭제).
+- **규칙**: 작성자와 **다른 seat/모델**에 크로스체크 1회. 예) Claude 머지 diff → 다른 seat(Gemini/Codex) 검증 · 수학/실시간 외부사실 → Grok(live 데이터) verify.
+- **종합(synthesis)**: 파편 결과를 단순 머지 X → rationale와 함께 병합(허브 BOARD), 소수의견 보존.
+- **ai-debate와 구분**: `ai-debate`(패널→별도심판→DECISIONS)는 **결정**용(§35.1), 이 cross-verify는 **일상 실행 산출물**용. 둘 다 MoA 계열 — 이미 우리가 MoA를 하고 있었음.
+- **고정 능력레인 + 동적 라우팅**: Claude=코드/오케스트레이션, Codex=UI, Antigravity=Android 에뮬(하드웨어 바운드), Grok=live-X(moat), Gemini=research/vision/long-context. 능력레인 고정, 과제 배정은 동적.
+- **투명성 유지**: Fugu는 단일 엔드포인트 뒤 은닉이지만 우리는 BOARD/DECISIONS(D-code)로 투명(human-in-the-loop Simon).
+- 상세: `reports/external-knowledge-integration-spec-20260702.md` SPEC-1. 허브 `ROUTING.md §MoA`와 연동(허브 재개 시 적용).
+
 ## 완료 보고 (HTML) — 표준
 작업을 끝내면 **HTML 완료 보고서**를 생성한다 (SimonKCore `completion-report` 표준).
 - 첫 화면은 **심플 요약**(한눈 카드 한 줄) + 직관 그래픽/차트(인라인 SVG)·이미지.
