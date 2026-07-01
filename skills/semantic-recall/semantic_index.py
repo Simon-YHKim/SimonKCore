@@ -3,14 +3,16 @@
 
 L3 layer for SimonK infra (fills the "second brain levels" L3 gap). Builds a vector
 index over markdown (Obsidian SimonKWiki vault + .claude memory) using a LOCAL
-sentence-transformer, and queries it by meaning. No API cost, offline after first run.
+embedding model, and queries it by meaning. No API cost, offline after first run.
 
 Usage:
     python semantic_index.py build  [--roots PATH ...] [--out DIR]
     python semantic_index.py query  "your question"   [-k 8] [--index DIR]
 
-One-time setup:  pip install sentence-transformers numpy
-Model all-MiniLM-L6-v2 (~90MB) auto-downloads on first run, then cached/offline.
+One-time setup (pick one):
+    Light (no torch, ~150MB):   pip install fastembed numpy
+    Full  (sentence-transformers, ~2GB torch):   pip install sentence-transformers numpy
+The script prefers fastembed; the ~90MB model auto-downloads once, then runs offline.
 
 Design notes (from the transcript caveats):
   - Vectors are for needle-in-haystack recall ONLY. They miss aggregates/whole-file
@@ -31,25 +33,51 @@ DEFAULT_ROOTS = [
 ]
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_INDEX = os.path.join(HERE, ".semantic-index")
-MODEL_NAME = "all-MiniLM-L6-v2"
+ST_MODEL = "all-MiniLM-L6-v2"
+FE_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 CHUNK_CHARS = 800
 CHUNK_OVERLAP = 150
-
-
-def _load_model():
-    try:
-        from sentence_transformers import SentenceTransformer
-    except ImportError:
-        sys.exit("[semantic-recall] Missing dep. Run:  pip install sentence-transformers numpy")
-    return SentenceTransformer(MODEL_NAME)
 
 
 def _np():
     try:
         import numpy as np
+        return np
     except ImportError:
-        sys.exit("[semantic-recall] Missing dep. Run:  pip install numpy")
-    return np
+        sys.exit("[semantic-recall] Missing numpy. Run:  pip install fastembed numpy")
+
+
+def get_embedder():
+    """Return (encode_fn, backend_name). Prefer fastembed (light, no torch)."""
+    np = _np()
+    # Windows fix: force file copies (not symlinks) so the HF snapshot dir is complete,
+    # and pin a stable cache dir (Temp cleanup was wiping tokenizer_config.json between
+    # the build and query processes).
+    os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS", "1")
+    cache_dir = os.environ.get("SEMANTIC_RECALL_CACHE", os.path.join(HERE, ".model-cache"))
+    try:
+        from fastembed import TextEmbedding
+        model = TextEmbedding(model_name=FE_MODEL, cache_dir=cache_dir)
+
+        def encode(texts):
+            arr = np.asarray(list(model.embed(list(texts))), dtype="float32")
+            norms = np.linalg.norm(arr, axis=1, keepdims=True)
+            norms[norms == 0] = 1.0
+            return arr / norms
+        return encode, "fastembed"
+    except ImportError:
+        pass
+    try:
+        from sentence_transformers import SentenceTransformer
+        model = SentenceTransformer(ST_MODEL)
+
+        def encode(texts):
+            return model.encode(list(texts), batch_size=64,
+                                show_progress_bar=True, normalize_embeddings=True)
+        return encode, "sentence-transformers"
+    except ImportError:
+        sys.exit("[semantic-recall] Need an embedder. Light: pip install fastembed numpy"
+                 "  |  Full: pip install sentence-transformers numpy")
 
 
 def iter_md(roots):
@@ -69,7 +97,6 @@ def read_text(path):
 
 def chunk_doc(text):
     """Split by markdown headings, then window long sections. Yields (heading, chunk)."""
-    # section boundaries at any heading line
     parts = re.split(r"(?m)^(#{1,6}\s+.*)$", text)
     sections = []
     if parts and parts[0].strip():
@@ -93,7 +120,7 @@ def chunk_doc(text):
 
 def build(roots, out):
     np = _np()
-    model = _load_model()
+    encode, backend = get_embedder()
     metas, texts = [], []
     for path in iter_md(roots):
         try:
@@ -106,13 +133,14 @@ def build(roots, out):
             texts.append(f"{heading}\n{chunk}")
     if not texts:
         sys.exit("[semantic-recall] no markdown chunks found under the given roots.")
-    print(f"[semantic-recall] embedding {len(texts)} chunks from {len(set(m['file'] for m in metas))} files ...")
-    emb = model.encode(texts, batch_size=64, show_progress_bar=True, normalize_embeddings=True)
+    n_files = len(set(m["file"] for m in metas))
+    print(f"[semantic-recall] backend={backend}  embedding {len(texts)} chunks from {n_files} files ...")
+    emb = np.asarray(encode(texts), dtype="float32")
     os.makedirs(out, exist_ok=True)
-    np.save(os.path.join(out, "embeddings.npy"), np.asarray(emb, dtype="float32"))
+    np.save(os.path.join(out, "embeddings.npy"), emb)
     with open(os.path.join(out, "meta.json"), "w", encoding="utf-8") as f:
         json.dump(metas, f, ensure_ascii=False)
-    print(f"[semantic-recall] wrote index -> {out}  ({len(texts)} chunks)")
+    print(f"[semantic-recall] wrote index -> {out}  ({len(texts)} chunks, backend={backend})")
 
 
 def query(index, q, k):
@@ -124,9 +152,9 @@ def query(index, q, k):
     emb = np.load(emb_path)
     with open(meta_path, "r", encoding="utf-8") as f:
         metas = json.load(f)
-    model = _load_model()
-    qv = model.encode([q], normalize_embeddings=True)[0]
-    scores = emb @ np.asarray(qv, dtype="float32")
+    encode, _ = get_embedder()
+    qv = np.asarray(encode([q]), dtype="float32")[0]
+    scores = emb @ qv
     top = np.argsort(-scores)[:k]
     print(f"\n[semantic-recall] top {k} for: {q}\n")
     for rank, i in enumerate(top, 1):
@@ -138,6 +166,12 @@ def query(index, q, k):
 
 
 def main():
+    # Windows consoles default to cp949/cp1252 and choke on em-dashes etc. in results.
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):
+            pass
     ap = argparse.ArgumentParser(description="Local semantic search over the second brain (L3).")
     sub = ap.add_subparsers(dest="cmd", required=True)
     b = sub.add_parser("build", help="build/refresh the vector index")
