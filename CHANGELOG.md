@@ -5,6 +5,15 @@ All notable changes to this plugin are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- Encode `semantic-recall`'s description as a YAML folded scalar so its embedded
+  colon and quoted phrases parse without changing the description's text. Add
+  the missing skill version and two bounded, no-model evaluation cases. This is
+  a metadata/coverage repair, not a native-host or embedding-runtime validation;
+  the existing backend instructions, paths and script remain unchanged.
+
 ## [0.3.0] - 2026-06-16
 
 ### Changed

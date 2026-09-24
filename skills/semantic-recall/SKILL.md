@@ -1,6 +1,8 @@
 ---
 name: semantic-recall
-description: Use when the user wants meaning-based (not keyword) search over the Obsidian second brain / SimonKWiki vault or the .claude memory — triggers "의미검색", "시맨틱 검색", "벌트 의미로 찾아", "semantic search", "smart lookup", "메모리 의미검색", "뜻으로 찾아줘", "벡터 검색 벌트", or /semantic-recall. Fills the L3 gap (the second-brain "levels" model): our vault relies on grep + wikilinks (L1/L2) but has no embedding search. This skill builds and queries a LOCAL, zero-API-cost vector index (sentence-transformers, all-MiniLM-L6-v2) over markdown, returning meaning-similar chunks. Evergreen summaries stay markdown — vectors are for needle-in-haystack recall only (they miss aggregates/whole-file context). Different from wiki-query (exact/link traversal) and memory MEMORY.md (flat index).
+description: >-
+  Use when the user wants meaning-based (not keyword) search over the Obsidian second brain / SimonKWiki vault or the .claude memory — triggers "의미검색", "시맨틱 검색", "벌트 의미로 찾아", "semantic search", "smart lookup", "메모리 의미검색", "뜻으로 찾아줘", "벡터 검색 벌트", or /semantic-recall. Fills the L3 gap (the second-brain "levels" model): our vault relies on grep + wikilinks (L1/L2) but has no embedding search. This skill builds and queries a LOCAL, zero-API-cost vector index (sentence-transformers, all-MiniLM-L6-v2) over markdown, returning meaning-similar chunks. Evergreen summaries stay markdown — vectors are for needle-in-haystack recall only (they miss aggregates/whole-file context). Different from wiki-query (exact/link traversal) and memory MEMORY.md (flat index).
+version: 0.1.1
 ---
 
 # semantic-recall — 로컬 의미검색 (L3)

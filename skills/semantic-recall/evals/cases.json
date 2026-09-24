@@ -1,0 +1,22 @@
+{
+  "skill": "semantic-recall",
+  "version": "0.1.1",
+  "cases": [
+    {
+      "id": "exact-reference-no-embedding",
+      "prompt": "파일명이 decision-014.md인 노트를 찾아줘. 이 평가에서 제공한 파일 목록은 notes/decision-014.md, notes/decision-041.md 두 개뿐이야. 파일 생성, 모델 실행, 다운로드 없이 목록으로만 답해.",
+      "assertions": [
+        {"id": "exact-match", "text": "Returns notes/decision-014.md as the exact filename match, not decision-041.md."},
+        {"id": "bounded-evidence", "text": "Limits the finding to the supplied two-file list and makes no claim that a vault-wide scan, index build or embedding call occurred."}
+      ]
+    },
+    {
+      "id": "source-context-over-chunk",
+      "prompt": "의미검색 후보 점수 0.91, 파일 notes/capacity.md, 청크는 'A안은 처리량이 높다'야. 원문 전체는 'A안은 처리량이 높다. 단, 3교대 가정이며 현재 2교대 조건에서는 B안이 적합하다.' 현재 2교대에 무엇이 적합한지 제공한 원문만 보고 답해. 추가 도구 실행은 금지야.",
+      "assertions": [
+        {"id": "context-correct-answer", "text": "Chooses B for the current two-shift condition and explains the three-shift limitation on A."},
+        {"id": "source-not-score-proof", "text": "Uses notes/capacity.md's supplied full context as evidence, not the 0.91 similarity score as factual confidence, and does not claim a new search or model run."}
+      ]
+    }
+  ]
+}
