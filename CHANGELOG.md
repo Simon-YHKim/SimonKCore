@@ -8,11 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+- Align `semantic-recall` 0.2.0 instructions with the existing FastEmbed-first
+  backend and explicit `--roots`, `--out` and `--index` arguments. Explain that
+  query also executes a model, cache presence is not offline proof, and scope,
+  fresh output and partial-coverage checks are coordinator requirements. Expand
+  bounded evaluation coverage to six cases; no embedding runtime guards or
+  native-host execution are added by this documentation/evaluation change.
 - Encode `semantic-recall`'s description as a YAML folded scalar so its embedded
   colon and quoted phrases parse without changing the description's text. Add
   the missing skill version and two bounded, no-model evaluation cases. This is
   a metadata/coverage repair, not a native-host or embedding-runtime validation;
-  the existing backend instructions, paths and script remain unchanged.
+  that earlier repair left the backend instructions, paths and script unchanged.
 
 ## [0.3.0] - 2026-06-16
 

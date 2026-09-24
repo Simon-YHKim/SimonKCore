@@ -1,41 +1,106 @@
 ---
 name: semantic-recall
 description: >-
-  Use when the user wants meaning-based (not keyword) search over the Obsidian second brain / SimonKWiki vault or the .claude memory — triggers "의미검색", "시맨틱 검색", "벌트 의미로 찾아", "semantic search", "smart lookup", "메모리 의미검색", "뜻으로 찾아줘", "벡터 검색 벌트", or /semantic-recall. Fills the L3 gap (the second-brain "levels" model): our vault relies on grep + wikilinks (L1/L2) but has no embedding search. This skill builds and queries a LOCAL, zero-API-cost vector index (sentence-transformers, all-MiniLM-L6-v2) over markdown, returning meaning-similar chunks. Evergreen summaries stay markdown — vectors are for needle-in-haystack recall only (they miss aggregates/whole-file context). Different from wiki-query (exact/link traversal) and memory MEMORY.md (flat index).
-version: 0.1.1
+  Use when the user wants meaning-based recall over approved markdown notes,
+  SimonKWiki or memory; triggers include "의미검색", "시맨틱 검색", "뜻으로 찾아줘",
+  "semantic search", "smart lookup" and /semantic-recall. Produces ranked source
+  candidates from a local embedding index, then checks full source context.
+  Prefer exact text, filenames and wiki links when sufficient; this is not an
+  aggregate or whole-vault summary tool. Both building and querying execute an
+  embedding model and require explicit scope, model permission and verified
+  dependency/cache readiness. Under /vibe, inherit its budget and authority;
+  do not install, download or invoke another provider to bypass restrictions.
+version: 0.2.0
 ---
 
-# semantic-recall — 로컬 의미검색 (L3)
+# semantic-recall — local meaning-based recall
 
-> Second Brain "levels" 모델의 **L3 결손**을 메운다. 우리는 L1(CLAUDE.md 라우터)·L2(Karpathy 위키·wiki-ingest) 초과 달성했으나, **임베딩 의미검색이 없어** grep+wikilink에 의존했다. 이 스킬은 **로컬·무료** 벡터 인덱스로 뜻 기반 회상을 제공한다. API 비용 0(로컬 모델).
+Use embeddings only when exact text, filenames and wiki-link traversal are
+insufficient. The index is a derived search aid, never the source of truth.
+Open full source notes before answering; similarity scores are not factual
+confidence. Aggregates and whole-file summaries need source-level evidence.
+State the source conditions that change the answer, not just the chosen option.
 
-## 원칙 (영상 caveat 반영)
-- **벡터는 검색 전용**. 에버그린 요약·집계·전체맥락은 **markdown 유지**(벡터는 "최고매출 주" 같은 집계를 놓침 — 청크만 봄).
-- **파생 인덱스**(system-of-record 아님). 원본 불변, 언제든 재생성.
-- 검색순서 fallback: **memory → wiki(위키링크) → semantic(이 스킬) → live-source**.
+## Authority and execution boundary
 
-## 사용
-```bash
-# 1) 최초/갱신: 인덱스 빌드 (벌트 + memory 스캔 → 임베딩 → .semantic-index/)
-python semantic_index.py build
+Under `/vibe`, remain a leaf of the same parent run, budget and approved scope.
+Do not start a second coordinator or fall back to a provider or Bot to bypass
+restrictions. Local computation is not proof of zero cost or permission.
 
-# 2) 질의: 뜻으로 top-k 회상
-python semantic_index.py query "번아웃 없이 지속가능한 자율 루프" -k 8
+Both `build` and `query` load an embedding model; `query` embeds the question
+even when the index already exists. A model-execution prohibition blocks both.
+A plan-only request permits conditional commands, not execution or unrequested
+path checks. When blocking an embedding query, explicitly offer permitted
+exact/text/source lookup if suitable; do not imply all reading is prohibited.
+
+## Preflight before an authorized run
+
+1. Resolve the absolute path of this skill's bundled
+   [semantic_index.py](semantic_index.py). Never guess from the working directory.
+2. Use only explicitly approved absolute input roots and output/index paths.
+   Do not use the script's legacy default wiki, memory or index paths.
+3. Before building, verify every approved root exists and is readable. Missing
+   roots stop the workflow; the script itself merely warns and skips them, and
+   initializes the model before scanning. Review links/junctions and descendants
+   so traversal cannot expand scope; if containment is unverified, do not run.
+4. Build into a new output directory outside the input roots. If it exists,
+   stop and select a separately approved fresh path; preserve existing indexes.
+   The script can overwrite files and does not write the index pair atomically.
+5. For query, verify the approved index's scope and producing backend/model
+   environment from independent records. The script stores chunk metadata but
+   does not persist or check backend provenance. Do not infer compatibility.
+6. Verify dependencies and model assets without importing an embedding backend
+   during a no-model preflight. A cache directory alone is not readiness proof.
+   Never silently install packages or download models. Where downloads are
+   forbidden, require verified assets and a suitable no-network execution
+   boundary; otherwise hold execution. `$0` is not download/model permission.
+
+These are coordinator requirements, not new guards enforced by the script.
+If a file read later fails, report partial coverage rather than complete indexing.
+
+## Actual backend and cache behavior
+
+The script requires NumPy and first attempts `fastembed.TextEmbedding` with
+`sentence-transformers/all-MiniLM-L6-v2`. An `ImportError` in that attempt falls
+back to `sentence_transformers.SentenceTransformer("all-MiniLM-L6-v2")`.
+Other FastEmbed failures do not automatically select the fallback.
+Import success alone does not prove model construction succeeded or that a
+backend was used; report only an attempt until construction is observed.
+
+`SEMANTIC_RECALL_CACHE` supplies the FastEmbed `cache_dir`; without it, that
+backend uses `.model-cache` beside the script. It does not choose a backend and
+is not passed to the SentenceTransformer constructor. Explicitly approve any
+cache writes and resolve the selected backend's cache policy before execution.
+There is no `--backend` or `--offline` CLI option and no enforced local-only
+model-loading flag. Installed packages or a cache folder do not prove that
+network access/downloads cannot occur. Do not treat a source comment as a guard.
+
+## Conditional commands
+
+Only after the above checks and execution authority are satisfied, prepare
+PowerShell arguments with each spaced path preserved as one argument:
+
+```powershell
+# All variables must be resolved and approved; these are NOT dry-run commands.
+# recallRoots is an array of absolute source-root strings.
+& python -B $recallScript build --roots $recallRoots --out $recallNewIndex
+& python -B $recallScript query $recallQuestion -k 8 --index $recallIndex
 ```
-최초 1회 `pip install sentence-transformers numpy`. 모델(all-MiniLM-L6-v2 ~90MB)은 첫 실행 시 자동 다운로드(로컬 캐시, 이후 오프라인).
 
-## 대상 (기본, `--roots`로 변경)
-- `C:\Coding Infra\obsidian\SimonKWiki\wiki` (Karpathy 위키)
-- `C:\Users\Soha.Bae\.claude\projects\C--Coding-Infra\memory` (per-fact 메모리)
+Use a positive `-k`. For a plan-only request, show the supplied absolute paths
+in a conditional command and state which checks/permissions still block it.
+Never execute a bare `build` or a query relying on the default index path.
 
-## 출력
-top-k 청크: `점수 · 파일:섹션 · 스니펫`. 에이전트는 이걸 후보로 받아 **원본 md를 열어** 전체맥락 확인(청크 요약 신뢰 금지).
+## Output and reporting
 
-## 언제 안 쓰나
-- 정확 단어/파일명 → grep/`wiki-query`. 관계체인 추적 → 위키링크/(향후)그래프. 집계·전체요약 → 원본 md 직독.
+Build writes `embeddings.npy` and `meta.json` in the selected output directory.
+Query prints ranked score, source path/heading and snippet; open the approved
+full source and cite that context, not the similarity score, in the answer.
 
-## 로드맵
-- v0.1(현재): 로컬 임베딩 build/query, npz 저장, 코사인 top-k.
-- v0.2: 증분 인덱싱(변경파일만), 하이브리드(키워드+벡터) 재랭킹.
-- v0.3: POLE+ 엔티티 추출로 typed-edge 제안(L4 컨텍스트그래프, Neo4j 영상) — 규칙기반 우선(LLM 비용 회피).
-- 정본 스펙: `reports/external-knowledge-integration-spec-20260702.md` SPEC-2.
+Record actual input/output scope, observed chunk/file counts, missing roots,
+read errors, backend/environment evidence and any unverified items. Do not
+label a partial build as whole-vault coverage or infer zero documents from a
+missing root. Preserve partial/existing indexes; resolving the missing scope
+requires a separately authorized fresh build, not silent expansion or overwrite.
+Keep model identity, costs and provenance unknown when not observed. A command
+plan, static review or simulated response is not an executed embedding test.
