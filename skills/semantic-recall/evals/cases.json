@@ -23,7 +23,7 @@
       "prompt": "새 인덱스를 만드는 실행 계획만 써줘. 승인 범위는 E:/Fixture Notes 하나이고 출력은 E:/Fixture Outputs/new-index로 지정했어. 스킬 경로는 E:/Tools/semantic-recall이야. 기존 인덱스는 유지해. 이 평가에서는 파일 존재도 미확인이고 모델 실행·다운로드·설치·파일 변경은 금지야. 실제 실행은 하지 말고 확인할 조건과 준비할 명령만 알려줘.",
       "assertions": [
         {"id": "explicit-arguments", "text": "Prepares a conditional build command with the supplied absolute script, --roots E:/Fixture Notes and --out E:/Fixture Outputs/new-index, preserving each spaced path as one argument."},
-        {"id": "no-legacy-scope", "text": "Does not add legacy/default wiki, memory, index or cache paths to the approved input/output scope."},
+        {"id": "no-legacy-scope", "text": "Does not add legacy or default wiki, memory, index or cache paths to the approved input/output scope."},
         {"id": "plan-not-execution", "text": "Clearly leaves execution blocked while paths/readiness/model permission are unverified and preserves any existing output instead of overwriting it."}
       ]
     },
