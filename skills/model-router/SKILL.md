@@ -89,7 +89,7 @@ simonk skill 의 Phase 2 (Sprint plan) 에서 task N 개 split → 각 task 마�
 3. 모두 없음 → Cost-fallback (DeepSeek / open-weight)
 4. fallback 도 없음 → Claude default (어차피 simonk 호출 = Claude Code 안)
 
-key 확인: `~/.claude/.env` 또는 KeePassXC vault (`scripts/keepass-inject.ps1`).
+인증 가능 여부는 현재 프로세스의 환경변수 **이름 존재 여부** 또는 이미 인증된 CLI 상태로만 확인한다. `.env`·금고 내용을 읽거나 레거시 주입 스크립트를 실행하지 않는다. 키가 없으면 해당 경로를 불가로 표시한다.
 
 ## 4. 추천 출력 형식
 
@@ -143,7 +143,7 @@ JSON format (`--format json` 또는 simonk integration):
 
 - v0.1 (현재): task type 분류 + 추천 매트릭스 + Markdown/JSON output
 - v0.2 (Phase B): simonk Phase 3 자동 호출 hook + multi-terminal config 출력
-- v0.3: 사용자 API key 자동 detect (KeePassXC 읽기)
+- v0.3 (미구현): 사용자 승인과 검증된 적용기가 있을 때만 인증 경로 연동; KeePassXC 자동 읽기 금지
 - v0.4: 작업 history 기반 학습 (어떤 task 에서 어떤 모델이 실제 잘 했는지 누적)
 - v1.0: 벤치마크 → 매핑 자동 재계산 (수동 매트릭스 → 가중치 기반 알고리즘)
 

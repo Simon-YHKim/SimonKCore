@@ -33,10 +33,10 @@ version: 1.0.0
 | **Git config dirty** | `git -C $REPO_DIR status -s` | dirty 면 사용자 alert (auto-push 위험) |
 | **Network** | `curl -sf -m 3 https://github.com > /dev/null` | 실패 시 push/clone 작업 skip + log |
 | **Disk** | `df --output=avail $HOME \| tail -1` | <500MB 면 warn (vendored clone 위험) |
-| **gcloud auth** (선택) | `gcloud-helper` skill 위임 | ghost project 면 auto-fix |
+| **gcloud auth** (선택) | 사용자가 요청한 경우에만 `gcloud-helper` 로컬 진단 | 프로젝트·계정·ADC 자동 변경 금지 |
 | **Node/Python** (선택) | 작업 종류에 따라 `node -v` / `python3 -V` | 부재면 skill 매핑 변경 |
 
-기존 `gcloud-helper` skill 과 통합 — Doctor 가 Phase 0 에서 silent 호출. 차용 출처: OpenSenseNova/SenseNova-Skills.
+`gcloud-helper`는 자동 부트스트랩 대상이 아니다. 인증 또는 프로젝트 변경은 정확한 대상·효과를 별도로 검토하고, 검증된 적용기가 없으면 사용자에게 계획만 전달한다.
 
 ## 1.5 Boundary Check (필수 매 호출) — 2026-05-25 추가
 

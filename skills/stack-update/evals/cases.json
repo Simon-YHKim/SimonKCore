@@ -1,29 +1,28 @@
 {
   "skill": "stack-update",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "cases": [
     {
-      "id": "ko-full-refresh",
-      "prompt": "SimonK stack 최신화",
+      "id": "safe-full-refresh",
+      "prompt": "SimonK stack 전체 최신화해줘",
       "assertions": [
-        { "id": "orchestrates-all", "text": "The response fully refreshes the SimonK Stack by orchestrating the SimonK-stack git pull, wiki pull, /gstack-upgrade, the five vendored stack upgrades, and install.sh --force." },
-        { "id": "per-step-summary", "text": "It produces a per-step summary with commits-pulled counts and a final state report." }
+        {"id": "inventory-first", "text": "Records root, branch, upstream, dirty state and ahead/behind for each selected repository before an update."},
+        {"id": "ff-only", "text": "Uses fast-forward-only updates for clean known branches, skipping dirty or divergent repositories without reset, stash or force."},
+        {"id": "separate-install", "text": "Does not run a force/no-backup global skill installer as part of repository refresh."}
       ]
     },
     {
-      "id": "en-update-stack-and-slash",
-      "prompt": "update the stack",
+      "id": "status-only",
+      "prompt": "스택 업데이트가 필요한지만 확인해줘",
       "assertions": [
-        { "id": "whole-stack", "text": "The response updates the entire stack rather than a single component, equivalent to /stack-update." },
-        { "id": "final-state-report", "text": "It ends with a final state report summarizing each step's commits pulled." }
+        {"id": "read-only", "text": "Reports the plan and current state without pulling, installing or changing profiles."}
       ]
     },
     {
-      "id": "negative-gstack-only",
-      "prompt": "upgrade gstack",
+      "id": "gstack-only-routes-away",
+      "prompt": "gstack만 업그레이드해줘",
       "assertions": [
-        { "id": "routes-to-gstack-upgrade", "text": "The response recognizes this single-stack request should route to gstack-upgrade, not stack-update." },
-        { "id": "no-full-refresh", "text": "It does not orchestrate the full multi-stack refresh for this gstack-only request." }
+        {"id": "scope", "text": "Routes the single-vendor request to gstack-upgrade rather than refreshing the entire ecosystem."}
       ]
     }
   ]
