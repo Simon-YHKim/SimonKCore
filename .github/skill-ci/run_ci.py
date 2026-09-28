@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""SimonKAIHub skills quality gate (CI entry point).
+"""SimonK plugin skills quality gate (CI entry point).
 
-Runs three checks against every skill under ``skills/<name>/``:
+Runs four checks against every skill under ``skills/<name>/``:
 
 1. **Structure / lint** — ``validate_skill.py`` must report 0 errors.
 2. **Test coverage** — every skill MUST ship ``evals/cases.json``.
 3. **Cases schema**  — ``test_skill.py --dry-run`` must parse the cases.
 4. **Description quality gate** — no W006 (description score < 0.6).
 
-Stdlib only; safe to run in CI without ``pip install``. Exits non-zero
-if any skill fails any check, printing a per-skill summary table.
+Stdlib only; safe to run in CI without ``pip install``. Child Python processes
+and captured output use UTF-8 independently of the parent console locale.
+Exits non-zero if any skill fails any check, printing a per-skill summary table.
 """
 from __future__ import annotations
 
@@ -26,15 +27,19 @@ TEST = HERE / "test_skill.py"
 
 
 def run(cmd: list[str]) -> tuple[int, str]:
-    p = subprocess.run(cmd, capture_output=True, text=True)
-    return p.returncode, (p.stdout or "") + (p.stderr or "")
+    p = subprocess.run(cmd, capture_output=True)
+    try:
+        output = ((p.stdout or b"") + (p.stderr or b"")).decode("utf-8")
+    except UnicodeDecodeError:
+        return 2, "invalid UTF-8 child output"
+    return p.returncode, output
 
 
 def check_skill(d: Path) -> tuple[bool, list[str]]:
     fails: list[str] = []
 
     # 1. validate_skill.py — 0 errors (rc==0 means report.ok)
-    rc, out = run([sys.executable, str(VALIDATE), str(d), "--format", "json"])
+    rc, out = run([sys.executable, "-X", "utf8", str(VALIDATE), str(d), "--format", "json"])
     if rc != 0:
         # surface the error codes for the log
         codes = ""
@@ -59,7 +64,7 @@ def check_skill(d: Path) -> tuple[bool, list[str]]:
     else:
         # 3. cases must parse (dry-run)
         rc2, _ = run(
-            [sys.executable, str(TEST), str(d), "--cases", str(cases), "--dry-run"]
+            [sys.executable, "-X", "utf8", str(TEST), str(d), "--cases", str(cases), "--dry-run"]
         )
         if rc2 != 0:
             fails.append("cases.json failed dry-run")
@@ -76,19 +81,19 @@ def main() -> int:
         print("error: no skills found", file=sys.stderr)
         return 2
 
-    print(f"skills quality gate — {len(skills)} skills under {SKILLS.name}/\n")
+    print(f"skills quality gate - {len(skills)} skills under {SKILLS.name}/\n")
     any_fail = False
     for d in skills:
         ok, fails = check_skill(d)
         mark = "PASS" if ok else "FAIL"
-        print(f"  [{mark}] {d.name}" + ("" if ok else "  — " + "; ".join(fails)))
+        print(f"  [{mark}] {d.name}" + ("" if ok else "  - " + "; ".join(fails)))
         any_fail = any_fail or not ok
 
     print()
     if any_fail:
-        print("RESULT: FAIL — fix the items above before merging.")
+        print("RESULT: FAIL - fix the items above before merging.")
         return 1
-    print(f"RESULT: PASS — all {len(skills)} skills clean (lint + evals + quality).")
+    print(f"RESULT: PASS - all {len(skills)} skills clean (lint + evals + quality).")
     return 0
 
 

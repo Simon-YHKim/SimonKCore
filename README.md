@@ -53,7 +53,7 @@ Core 는 오케스트레이터가 없는 공유 라이브러리라 대부분의 
 
 공유 인프라 스킬 — 다른 플러그인/오케스트레이터가 호출하거나 직접 사용.
 
-`agent-delegate` · `careful` · `caveman` · `checkpoint` · `completion-report` · `defuddle` · `designmd-upgrade` · `domain-glossary` · `find-skill` · `founder-context` · `gcloud-helper` · `grill-me` · `gstack-upgrade` · `html-default-output` · `human-voice-guard` · `json-canvas` · `keepass-helper` · `learn` · `llm-wiki-builder` · `model-router` · `multi-terminal-dispatcher` · `notebooklm-import` · `obsidian-bases` · `obsidian-cli` · `obsidian-markdown` · `office-docs` · `office-hours` · `omc-upgrade` · `omo-upgrade` · `opencowork-upgrade` · `open-gstack-browser` · `openharness-upgrade` · `pair-agent` · `persona-validate` · `perspectives` · `plan-ceo-review` · `project-context-md` · `session-context-export` · `session-context-tracker` · `session-start-hook` · `setup-browser-cookies` · `simon-handoff` · `simon-instincts` · `simonk` · `simonk-report` · `simon-ohmo` · `simon-research` · `simon-worktree` · `sprint-optimizer` · `stack-update` · `tech-preference-tracker` · `unfreeze` · `web-publisher` · `wiki-ingest` · `wiki-lint` · `wiki-query`
+`agent-delegate` · `careful` · `caveman` · `checkpoint` · `completion-report` · `defuddle` · `designmd-upgrade` · `domain-glossary` · `find-skill` · `founder-context` · `gcloud-helper` · `grill-me` · `gstack-upgrade` · `html-default-output` · `human-voice-guard` · `json-canvas` · `keepass-helper` · `learn` · `llm-wiki-builder` · `model-router` · `multi-terminal-dispatcher` · `notebooklm-import` · `obsidian-bases` · `obsidian-cli` · `obsidian-markdown` · `office-docs` · `office-hours` · `omc-upgrade` · `omo-upgrade` · `opencowork-upgrade` · `open-gstack-browser` · `openharness-upgrade` · `pair-agent` · `persona-validate` · `perspectives` · `plan-ceo-review` · `project-context-md` · `semantic-recall` · `session-context-export` · `session-context-tracker` · `session-start-hook` · `setup-browser-cookies` · `simon-handoff` · `simon-instincts` · `simonk` · `simonk-report` · `simon-ohmo` · `simon-research` · `simon-worktree` · `sprint-optimizer` · `stack-update` · `tech-preference-tracker` · `unfreeze` · `web-publisher` · `wiki-ingest` · `wiki-lint` · `wiki-query`
 
 ## 기여
 
@@ -62,8 +62,12 @@ Core 는 공유 인프라라 대부분의 스킬은 커맨드 없이 다른 플�
 자세한 절차·스키마·도메인 규칙은 [`CONTRIBUTING.md`](./CONTRIBUTING.md) 참고.
 
 ```bash
-python3 .github/skill-ci/run_ci.py   # 머지 전 로컬 게이트
+python -B -m unittest discover -s .github/skill-ci -p test_run_ci_encoding.py
+python -B .github/skill-ci/run_ci.py   # 머지 전 로컬 게이트
 ```
+
+품질 게이트는 자식 Python을 UTF-8로 실행하고 결과를 엄격하게 해석하므로
+Windows 기본 CP949 콘솔에서도 같은 검증을 수행한다. 모델/API 호출은 없다.
 
 ## 라이선스 / 출처
 
