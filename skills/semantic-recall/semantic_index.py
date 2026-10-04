@@ -27,9 +27,23 @@ import os
 import re
 import sys
 
+
+def claude_project_slug(path):
+    """Claude Code's ~/.claude/projects folder name for a project path."""
+    return re.sub(r"[^A-Za-z0-9]", "-", os.path.abspath(path))
+
+
+# Default roots come from the SimonK profile env vars with home-folder fallbacks,
+# so no machine-specific path is hard-coded in the shipped skill:
+#   wiki   = $SIMON_WIKI_DIR/wiki (vault root; ~/.claude/wiki/SimonKWiki if unset)
+#   memory = ~/.claude/projects/<slug of $SIMONK_PROJECT_DIR (home if unset)>/memory
+HOME = os.path.expanduser("~")
+WIKI_DIR = (os.environ.get("SIMON_WIKI_DIR")
+            or os.path.join(HOME, ".claude", "wiki", "SimonKWiki"))
+PROJECT_DIR = os.environ.get("SIMONK_PROJECT_DIR") or HOME
 DEFAULT_ROOTS = [
-    r"C:\Coding Infra\obsidian\SimonKWiki\wiki",
-    r"C:\Users\Soha.Bae\.claude\projects\C--Coding-Infra\memory",
+    os.path.join(WIKI_DIR, "wiki"),
+    os.path.join(HOME, ".claude", "projects", claude_project_slug(PROJECT_DIR), "memory"),
 ]
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_INDEX = os.path.join(HERE, ".semantic-index")
